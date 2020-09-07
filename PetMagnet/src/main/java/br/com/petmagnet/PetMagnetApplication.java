@@ -10,16 +10,15 @@ import br.com.petmagnet.config.GeoLocationProperties;
 
 @SpringBootApplication
 public class PetMagnetApplication {
-	@Autowired
-	GeoLocationProperties glp;
+//	@Autowired
+//	GeoLocationProperties glp;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(PetMagnetApplication.class, args);
 	}	
 	
-	@PostConstruct
-	public void configuracaoExterna() {
-		System.out.println(glp.getApiKey());
-	}
-	
+//	@PostConstruct
+//	public void configuracaoExterna() {
+//		System.out.println(glp.getApiKey());
+//	}
 }
