@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("API/colaborador")
+@RequestMapping("API/colaboradores")
 public class ColaboradorResource {
 	@Autowired
 	ColaboradorService colaboradorService;

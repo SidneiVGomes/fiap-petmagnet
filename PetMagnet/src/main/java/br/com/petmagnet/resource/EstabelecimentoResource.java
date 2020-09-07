@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("API/estabelecimento")
+@RequestMapping("API/estabelecimentos")
 public class EstabelecimentoResource {
 	@Autowired
 	EstabelecimentoService estabelecimentoService;
