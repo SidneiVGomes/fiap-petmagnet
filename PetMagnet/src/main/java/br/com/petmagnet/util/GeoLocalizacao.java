@@ -17,34 +17,35 @@ import com.google.maps.model.GeocodingResult;
 public class GeoLocalizacao {
 	GeoApiContext context = null;
 
-	public GeoLocalizacao() {
-		context = new GeoApiContext.Builder().apiKey("???").build();
+	public GeoLocalizacao(String geoLocationApiKey) {
+		context = new GeoApiContext.Builder().apiKey( geoLocationApiKey ).build();
 	}
-
-	public Localizacao getGeoLocalizacao(String CEP) throws ApiException, InterruptedException, IOException, ParseException, org.json.simple.parser.ParseException {
+	
+	public Localizacao getGeoLocalizacao(String CEP) throws ApiException, InterruptedException, IOException,
+			ParseException, org.json.simple.parser.ParseException {
 		Localizacao loc = new Localizacao();
-		
+
 		GeocodingResult[] results = GeocodingApi.geocode(context, CEP).await();
-		
+
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 		String json = gson.toJson(results).toString();
-		
+
 		if (json.equals("[]")) {
 			return loc;
 		}
-		
-        // Converte o JSON para um objeto Java.
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(json);
 
-        // Lê os converte o objeto Java para um objeto JSON.
-        JSONArray jsonObject1 = (JSONArray) obj;
-        JSONObject jsonObject2 = (JSONObject)jsonObject1.get(0);
-        JSONObject jsonObject3 = (JSONObject)jsonObject2.get("geometry");
-        JSONObject location = (JSONObject) jsonObject3.get("location");
+		// Converte o JSON para um objeto Java.
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(json);
 
-        // Obtém os valores desejados.
+		// Lê os converte o objeto Java para um objeto JSON.
+		JSONArray jsonObject1 = (JSONArray) obj;
+		JSONObject jsonObject2 = (JSONObject) jsonObject1.get(0);
+		JSONObject jsonObject3 = (JSONObject) jsonObject2.get("geometry");
+		JSONObject location = (JSONObject) jsonObject3.get("location");
+
+		// Obtém os valores desejados.
 		loc.setLatitude(location.get("lat").toString());
 		loc.setLongitude(location.get("lng").toString());
 

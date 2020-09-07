@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.maps.errors.ApiException;
 
+import br.com.petmagnet.config.GeoLocationProperties;
 import br.com.petmagnet.model.Endereco;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.repository.EnderecoRepository;
@@ -28,9 +29,13 @@ import lombok.extern.slf4j.Slf4j;
 public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 	@Autowired
 	private EstabelecimentoRepository estabelecimentoRepository;
+	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 
+	@Autowired
+	private GeoLocationProperties geoLocationProperties;
+	
 	@Override
 	public Estabelecimento cadastrar(Estabelecimento estb) {
 		Endereco endereco = this.enderecoRepository.findByLogradouroAndNumeroAndBairroAndCidadeAndUF(
@@ -106,7 +111,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 	}
 	
 	private Endereco gravarNovoEndereco(Endereco e) {
-		GeoLocalizacao gl = new GeoLocalizacao();
+		GeoLocalizacao gl = new GeoLocalizacao(geoLocationProperties.getApiKey());
 		Localizacao lcl = new Localizacao();
 		
 		try {

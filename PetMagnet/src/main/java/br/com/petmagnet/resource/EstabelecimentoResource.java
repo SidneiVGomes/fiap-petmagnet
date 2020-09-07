@@ -2,6 +2,7 @@ package br.com.petmagnet.resource;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.petmagnet.dto.EstabelecimentoDTO;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.service.EstabelecimentoService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +26,10 @@ public class EstabelecimentoResource {
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
-	public Estabelecimento cadastrar(@RequestBody Estabelecimento estabelecimento) {
-		return this.estabelecimentoService.cadastrar(estabelecimento);
+	public Estabelecimento cadastrar(@RequestBody EstabelecimentoDTO estabelecimento) {
+		return this.estabelecimentoService.cadastrar(
+				new ModelMapper().map(estabelecimento, Estabelecimento.class)	
+			);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
