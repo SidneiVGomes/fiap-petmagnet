@@ -9,7 +9,6 @@ import org.springframework.core.env.Environment;
 @Configuration
 @PropertySource("classpath:application-apikey.properties")
 public class ConfiguracoesExternas {
-
 	@Autowired
 	private Environment env;	
 
