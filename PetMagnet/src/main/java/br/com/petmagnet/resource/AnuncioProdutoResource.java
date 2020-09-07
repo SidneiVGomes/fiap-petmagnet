@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("API/anuncio/produto")
+@RequestMapping("API/anuncios/produtos")
 public class AnuncioProdutoResource {
 	@Autowired
 	AnuncioProdutoService anuncioProdutoService;
