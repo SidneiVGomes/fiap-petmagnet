@@ -34,19 +34,16 @@ public class AnuncioServiceImpl implements AnuncioService {
 
 	@Override
 	public Anuncio cadastrar(AnuncioDTO obj) {
-		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getIdEstabelecimento())
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não Cadastrado"));
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getIdEstabelecimento());
 		
-		Colaborador colaborador = this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getIdColaborador())
-				.orElseThrow(() -> new BeanNotFoundException("Colaborador não Cadastrado"));
+		Colaborador colaborador = this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getIdColaborador()).get();
 		
 		return this.anuncioRepository.save(new Anuncio(null, obj.getTitulo(), obj.getDescricao(), null, estabelecimento, colaborador, null));
 	}
 
 	@Override
 	public Anuncio excluir(Long idEstabelecimento, Long idAnuncio) {
-		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento)
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não Cadastrado"));
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 
 		Anuncio anuncio = this.anuncioRepository.findByEstabelecimentoAndId(estabelecimento, idAnuncio)
 				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado"));
@@ -62,8 +59,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 
 	@Override
 	public Optional<Anuncio> consultarPorId(Long idEstabelecimento, Long idAnuncio) {
-		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento)
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não Cadastrado"));
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 		
 		return Optional.ofNullable(this.anuncioRepository.findByEstabelecimentoAndId(estabelecimento, idAnuncio)
 				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado")));
@@ -82,8 +78,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 
 	@Override
 	public List<Anuncio> consultarPorColaborador(Long idEstabelecimento, Long idColaborador) {
-		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento)
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não Cadastrado"));
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 		
 		Colaborador colaborador = this.colaboradorService.consultarPorId(idColaborador)
 				.orElseThrow(() -> new BeanNotFoundException("Colaborador não Cadastrado"));

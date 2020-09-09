@@ -2,7 +2,6 @@ package br.com.petmagnet.resource;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.petmagnet.dto.EstabelecimentoDTO;
-import br.com.petmagnet.model.Estabelecimento;
+import br.com.petmagnet.dto.EstabelecimentoReqDTO;
+import br.com.petmagnet.dto.EstabelecimentoResDTO;
 import br.com.petmagnet.service.EstabelecimentoService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,31 +25,29 @@ public class EstabelecimentoResource {
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
-	public Estabelecimento cadastrar(@RequestBody EstabelecimentoDTO estabelecimento) {
-		return this.estabelecimentoService.cadastrar(
-				new ModelMapper().map(estabelecimento, Estabelecimento.class)	
-			);
+	public EstabelecimentoResDTO cadastrar(@RequestBody EstabelecimentoReqDTO estabelecimentoReqDTO) {
+		return new EstabelecimentoResDTO(this.estabelecimentoService.cadastrar(estabelecimentoReqDTO.toEntity()));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)	
-	public Estabelecimento consultar(@PathVariable Long id) {
-		return this.estabelecimentoService.consultarPorId(id).get();
+	public EstabelecimentoResDTO consultar(@PathVariable Long id) {
+		return new EstabelecimentoResDTO(this.estabelecimentoService.consultarPorId(id));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET)	
-	public List<Estabelecimento> consultarTodos() {
-		return this.estabelecimentoService.consultarTodos();
+	public List<EstabelecimentoResDTO> consultarTodos() {
+		return new EstabelecimentoResDTO(this.estabelecimentoService.consultarTodos()).toList();
 	}	
 	
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)	
-	public Estabelecimento alterar(@PathVariable Long id, @RequestBody Estabelecimento novo) {
-    	return this.estabelecimentoService.alterar(id, novo);
+	public EstabelecimentoResDTO alterar(@PathVariable Long id, @RequestBody EstabelecimentoReqDTO estabelecimentoReqDTO) {
+    	return new EstabelecimentoResDTO(this.estabelecimentoService.alterar(id, estabelecimentoReqDTO.toEntity()));
 	}	
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)	
-	public Estabelecimento excluir(@PathVariable Long id) {
-    	return this.estabelecimentoService.excluir(id);
+	public EstabelecimentoResDTO excluir(@PathVariable Long id) {
+    	return new EstabelecimentoResDTO(this.estabelecimentoService.excluir(id));
 	}	
 }
