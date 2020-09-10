@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.petmagnet.dto.AnuncioProdutoDTO;
+import br.com.petmagnet.dto.AnuncioProdutoReqDTO;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.service.AnuncioProdutoService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class AnuncioProdutoResource {
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
-	public AnuncioProduto cadastrar(@RequestBody AnuncioProdutoDTO produto) {
+	public AnuncioProduto cadastrar(@RequestBody AnuncioProdutoReqDTO produto) {
 		return this.anuncioProdutoService.cadastrar(produto);
 	}
 
@@ -34,7 +34,7 @@ public class AnuncioProdutoResource {
 	}
 	
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)	
-	public AnuncioProduto alterar(@PathVariable Long id, @RequestBody AnuncioProdutoDTO produto) {
+	public AnuncioProduto alterar(@PathVariable Long id, @RequestBody AnuncioProdutoReqDTO produto) {
     	return this.anuncioProdutoService.alterar(id, produto);
 	}	
 

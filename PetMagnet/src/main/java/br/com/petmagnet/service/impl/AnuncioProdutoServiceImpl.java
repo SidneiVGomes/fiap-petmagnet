@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.petmagnet.dto.AnuncioProdutoDTO;
+import br.com.petmagnet.dto.AnuncioProdutoReqDTO;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.repository.AnuncioProdutoRepository;
@@ -26,7 +26,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 	private AnuncioServiceImpl anuncioService;
 
 	@Override
-	public AnuncioProduto cadastrar(AnuncioProdutoDTO obj) {
+	public AnuncioProduto cadastrar(AnuncioProdutoReqDTO obj) {
 		Anuncio anuncio = this.anuncioService.consultarPorId(obj.getIdEstabelecimento(), obj.getIdAnuncio()).get();
 		
 		if (anuncio == null) {
@@ -58,7 +58,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 	}
 
 	@Override
-	public AnuncioProduto alterar(Long id, AnuncioProdutoDTO obj) {
+	public AnuncioProduto alterar(Long id, AnuncioProdutoReqDTO obj) {
 		AnuncioProduto produto = this.anuncioProdutoRepository.findById(id).orElseThrow(() -> new IllegalStateException("Este Produto não está informado no anúncio."));
 
 		produto.setAnuncio(this.anuncioService.consultarPorId(obj.getIdEstabelecimento(), obj.getIdAnuncio()).get());

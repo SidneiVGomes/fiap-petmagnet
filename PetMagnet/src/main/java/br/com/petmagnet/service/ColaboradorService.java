@@ -18,5 +18,4 @@ public interface ColaboradorService {
 	public Optional<Colaborador> consultarPorId(Long id);
 	public Optional<Colaborador> consultarPorColaborador(Estabelecimento estabelecimento, Long idColaborador);
 	public List<Colaborador> consultarTodos();
-	public ColaboradorResDTO convertToDTO(Colaborador obj);
 }

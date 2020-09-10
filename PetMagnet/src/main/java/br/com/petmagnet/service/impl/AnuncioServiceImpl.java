@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.petmagnet.dto.AnuncioDTO;
-import br.com.petmagnet.dto.AnuncioResponseDTO;
 import br.com.petmagnet.exception.BeanNotFoundException;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.Colaborador;
@@ -33,10 +31,10 @@ public class AnuncioServiceImpl implements AnuncioService {
 	private ColaboradorServiceImpl colaboradorService;
 
 	@Override
-	public Anuncio cadastrar(AnuncioDTO obj) {
-		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getIdEstabelecimento());
-		
-		Colaborador colaborador = this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getIdColaborador()).get();
+	public Anuncio cadastrar(Anuncio obj) {
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getEstabelecimento().getId());
+
+		Colaborador colaborador = this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getColaborador().getId()).get();
 		
 		return this.anuncioRepository.save(new Anuncio(null, obj.getTitulo(), obj.getDescricao(), null, estabelecimento, colaborador, null));
 	}
@@ -66,8 +64,12 @@ public class AnuncioServiceImpl implements AnuncioService {
 	}
 
 	@Override
-	public Anuncio alterar(Long id, AnuncioDTO obj) {
-		Anuncio anuncio = this.anuncioRepository.findById(id)
+	public Anuncio alterar(Anuncio obj) {
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getEstabelecimento().getId());
+		
+		this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getColaborador().getId()).get();
+		
+		Anuncio anuncio = this.anuncioRepository.findById(obj.getId())
 				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado"));
 		
 		anuncio.setTitulo(obj.getTitulo());
@@ -80,14 +82,8 @@ public class AnuncioServiceImpl implements AnuncioService {
 	public List<Anuncio> consultarPorColaborador(Long idEstabelecimento, Long idColaborador) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 		
-		Colaborador colaborador = this.colaboradorService.consultarPorId(idColaborador)
-				.orElseThrow(() -> new BeanNotFoundException("Colaborador não Cadastrado"));
+		Colaborador colaborador = this.colaboradorService.consultarPorId(idColaborador).get();
 		
 		return this.anuncioRepository.findByEstabelecimentoAndColaborador(estabelecimento, colaborador);
-	}
-
-	@Override
-	public AnuncioResponseDTO convertParaDTO(Anuncio obj) {
-		return new AnuncioResponseDTO(obj.getId(), obj.getTitulo(), obj.getDescricao(), obj.getProdutos());
 	}
 }

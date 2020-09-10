@@ -76,11 +76,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
 
 	@Override
 	public Optional<Colaborador> consultarPorColaborador(Estabelecimento estabelecimento, Long idColaborador) {
-		return this.colaboradorRepository.findByEstabelecimentoAndId(estabelecimento, idColaborador);
-	}
-
-	@Override
-	public ColaboradorResDTO convertToDTO(Colaborador obj) {
-		return new ModelMapper().map(obj, ColaboradorResDTO.class);
+		return Optional.ofNullable(this.colaboradorRepository.findByEstabelecimentoAndId(estabelecimento, idColaborador)
+				.orElseThrow(() -> new BeanNotFoundException("Colaborador não Cadastrado")));
 	}
 }

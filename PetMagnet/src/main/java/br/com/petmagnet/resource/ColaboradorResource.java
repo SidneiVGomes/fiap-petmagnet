@@ -27,24 +27,22 @@ public class ColaboradorResource {
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
 	public ColaboradorResDTO cadastrar(@RequestBody @Valid ColaboradorReqDTO colaboradorReqDTO) {
-//		ColaboradorResDTO responseDTO = this.colaboradorService.convertToDTO(this.colaboradorService.cadastrar(colaboradorReqDTO));
-//		return responseDTO;
 		return new ColaboradorResDTO(this.colaboradorService.cadastrar((Colaborador) colaboradorReqDTO.toEntity()));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ColaboradorResDTO consultar(@PathVariable Long id) {
-		return this.colaboradorService.convertToDTO(this.colaboradorService.consultarPorId(id).get());
+		return new ColaboradorResDTO(this.colaboradorService.consultarPorId(id).get());
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ColaboradorResDTO alterar(@PathVariable Long id, @RequestBody ColaboradorReqDTO novo) {
-		return this.colaboradorService.convertToDTO(this.colaboradorService.alterar(id, novo));
+		return new ColaboradorResDTO(this.colaboradorService.alterar(id, novo));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ColaboradorResDTO excluir(@PathVariable Long id) {
-		return this.colaboradorService.convertToDTO(this.colaboradorService.excluir(id));
+		return new ColaboradorResDTO(this.colaboradorService.excluir(id));
 	}
 }
