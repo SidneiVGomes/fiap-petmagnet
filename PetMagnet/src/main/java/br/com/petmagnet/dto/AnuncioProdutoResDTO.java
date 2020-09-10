@@ -3,8 +3,6 @@ package br.com.petmagnet.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.petmagnet.model.AnuncioProduto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,8 +15,6 @@ public class AnuncioProdutoResDTO {
 	private String descricao;
 	private Double preco;
 	private String imagem;
-
-	@JsonIgnore
 	private List<AnuncioProduto> produtos;
 	
 	public AnuncioProdutoResDTO(AnuncioProduto obj) {

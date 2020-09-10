@@ -1,7 +1,5 @@
 package br.com.petmagnet.dto;
 
-import org.modelmapper.ModelMapper;
-
 import br.com.petmagnet.dto.interfac.RequestDTO;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.Colaborador;

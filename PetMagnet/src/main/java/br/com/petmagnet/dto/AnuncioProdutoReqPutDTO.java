@@ -1,5 +1,7 @@
 package br.com.petmagnet.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.petmagnet.dto.interfac.RequestDTO;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
@@ -9,9 +11,13 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AnuncioProdutoReqDTO implements RequestDTO{
+public class AnuncioProdutoReqPutDTO implements RequestDTO{
+	@JsonIgnore
 	private Long idEstabelecimento;
+	@JsonIgnore
 	private Long idAnuncio;
+	@JsonIgnore
+	private Long idProduto;
 	private String descricao;
 	private Double preco;
 	private String imagem;
@@ -33,5 +39,13 @@ public class AnuncioProdutoReqDTO implements RequestDTO{
 		produto.setImagem(this.imagem);
 		
 		return produto;
+	}	
+	
+	public Object toEntity(Long idEstabelecimento, Long idAnuncio, Long idProduto) {
+		this.setIdEstabelecimento(idEstabelecimento);
+		this.setIdAnuncio(idAnuncio);
+		this.setIdProduto(idProduto);
+		
+		return this.toEntity();
 	}	
 }
