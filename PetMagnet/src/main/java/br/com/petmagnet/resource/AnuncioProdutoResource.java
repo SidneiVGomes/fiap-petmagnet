@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.petmagnet.dto.AnuncioProdutoDTO;
+import br.com.petmagnet.dto.AnuncioProdutoReqDTO;
+import br.com.petmagnet.dto.AnuncioProdutoReqPutDTO;
+import br.com.petmagnet.dto.AnuncioProdutoResDTO;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.service.AnuncioProdutoService;
 import lombok.RequiredArgsConstructor;
@@ -23,23 +25,23 @@ public class AnuncioProdutoResource {
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
-	public AnuncioProduto cadastrar(@RequestBody AnuncioProdutoDTO produto) {
-		return this.anuncioProdutoService.cadastrar(produto);
+	public AnuncioProdutoResDTO cadastrar(@RequestBody AnuncioProdutoReqDTO produtoDTO) {
+		return new AnuncioProdutoResDTO(this.anuncioProdutoService.cadastrar((AnuncioProduto) produtoDTO.toEntity()));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)	
-	public AnuncioProduto consultar(@PathVariable Long id) {
-		return this.anuncioProdutoService.consultarPorId(id);
+    @RequestMapping(value = "/{idProduto}", method = RequestMethod.GET)	
+	public AnuncioProdutoResDTO consultar(@PathVariable Long idProduto) {
+		return new AnuncioProdutoResDTO(this.anuncioProdutoService.consultarPorId(idProduto));
 	}
 	
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)	
-	public AnuncioProduto alterar(@PathVariable Long id, @RequestBody AnuncioProdutoDTO produto) {
-    	return this.anuncioProdutoService.alterar(id, produto);
+    @RequestMapping(value = "/{idEstabelecimento}/{idAnuncio}/{idProduto}", method = RequestMethod.PUT)	
+	public AnuncioProdutoResDTO alterar(@PathVariable Long idEstabelecimento, @PathVariable Long idAnuncio, @PathVariable Long idProduto, @RequestBody AnuncioProdutoReqPutDTO produtoDTO) {
+    	return new AnuncioProdutoResDTO(this.anuncioProdutoService.alterar(idEstabelecimento, idAnuncio, idProduto, (AnuncioProduto) produtoDTO.toEntity(idEstabelecimento, idAnuncio, idProduto)));
 	}	
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)	
-	public AnuncioProduto excluir(@PathVariable Long id) {
-    	return this.anuncioProdutoService.excluir(id);
+    @RequestMapping(value = "/{idProduto}", method = RequestMethod.DELETE)	
+	public AnuncioProdutoResDTO excluir(@PathVariable Long idProduto) {
+    	return new AnuncioProdutoResDTO(this.anuncioProdutoService.excluir(idProduto));
 	}	
 }

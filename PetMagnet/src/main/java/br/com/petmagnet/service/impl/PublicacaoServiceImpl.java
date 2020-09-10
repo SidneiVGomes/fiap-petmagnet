@@ -44,11 +44,9 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 	
 	@Override
 	public Publicacao publicar(PublicacaoDTO obj) {
-		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getIdEstabelecimento())
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não Cadastrado"));
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getIdEstabelecimento());
 		
-		Colaborador colaborador = this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getIdColaborador())
-				.orElseThrow(() -> new BeanNotFoundException("Colaborador não Cadastrado"));
+		Colaborador colaborador = this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getIdColaborador()).get();
 
 		Anuncio anuncio = this.anuncioService.consultarPorId(obj.getIdEstabelecimento(), obj.getIdAnuncio())
 				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado"));
@@ -66,8 +64,7 @@ public class PublicacaoServiceImpl implements PublicacaoService {
  
 	@Override
 	public Publicacao excluir(Long idEstabelecimento, Long idPublicacao) {
-		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento)
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não Cadastrado"));
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 
 		Publicacao publicacao = this.publicacaoRepository.findByEstabelecimentoAndId(estabelecimento, idPublicacao)
 				.orElseThrow(() -> new BeanNotFoundException("Publicação não Cadastrada"));
@@ -83,8 +80,7 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
 	@Override
 	public Optional<Publicacao> consultarPorId(Long idEstabelecimento, Long idPublicacao) {
-		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento)
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não Cadastrado"));
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 		
 		return this.publicacaoRepository.findByEstabelecimentoAndId(estabelecimento, idPublicacao);
 	}

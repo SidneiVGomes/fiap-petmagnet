@@ -1,12 +1,15 @@
 package br.com.petmagnet.service.impl;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.petmagnet.dto.AnuncioProdutoDTO;
+import br.com.petmagnet.exception.BeanNotFoundException;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.repository.AnuncioProdutoRepository;
@@ -26,25 +29,24 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 	private AnuncioServiceImpl anuncioService;
 
 	@Override
-	public AnuncioProduto cadastrar(AnuncioProdutoDTO obj) {
-		Anuncio anuncio = this.anuncioService.consultarPorId(obj.getIdEstabelecimento(), obj.getIdAnuncio()).get();
-		
-		if (anuncio == null) {
-			return null;
-		}
-		
+	public AnuncioProduto cadastrar(AnuncioProduto obj) {
+		Anuncio anuncio = this.anuncioService.consultarPorId(
+				obj.getAnuncio().getEstabelecimento().getId(), 
+				obj.getAnuncio().getId()
+			).get();
+
 		AnuncioProduto produto = new AnuncioProduto(null, obj.getDescricao(), obj.getPreco(), obj.getImagem(), anuncio);
 		
 		return this.anuncioProdutoRepository.save(produto);	
 	}
 
 	@Override
-	public AnuncioProduto excluir(Long id) {
-		return this.anuncioProdutoRepository.findById(id)
+	public AnuncioProduto excluir(Long idProduto) {
+		return this.anuncioProdutoRepository.findById(idProduto)
 				.map(anuncioProdutos -> {
-					this.anuncioProdutoRepository.deleteById(id);
+					this.anuncioProdutoRepository.deleteById(idProduto);
 					return anuncioProdutos;
-				}).orElseThrow(() -> new IllegalStateException("Este Produto não está informado no anúncio."));
+				}).orElseThrow(() -> new BeanNotFoundException("Produto não informado no anúncio."));
 	}
 
 	@Override
@@ -53,19 +55,26 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 	}
 
 	@Override
-	public AnuncioProduto consultarPorId(Long id) {
-		return this.anuncioProdutoRepository.findById(id).orElseThrow(() -> new IllegalStateException("Este Produto não está informado no anúncio."));
+	public AnuncioProduto consultarPorId(Long idProduto) {
+		return this.anuncioProdutoRepository.findById(idProduto)
+			.orElseThrow(() -> new BeanNotFoundException("Produto não informado no anúncio."));
 	}
 
 	@Override
-	public AnuncioProduto alterar(Long id, AnuncioProdutoDTO obj) {
-		AnuncioProduto produto = this.anuncioProdutoRepository.findById(id).orElseThrow(() -> new IllegalStateException("Este Produto não está informado no anúncio."));
-
-		produto.setAnuncio(this.anuncioService.consultarPorId(obj.getIdEstabelecimento(), obj.getIdAnuncio()).get());
-		produto.setDescricao(obj.getDescricao());
-		produto.setImagem(obj.getImagem());
-		produto.setPreco(obj.getPreco());
+	public AnuncioProduto alterar(Long idEstabelecimento, Long idAnuncio, Long idProduto, AnuncioProduto obj) {
+		Anuncio anuncio = this.anuncioService.consultarPorId(idEstabelecimento, idAnuncio).get();
 		
-		return this.anuncioProdutoRepository.save(produto);
+		for (AnuncioProduto produto : anuncio.getProdutos()) {
+			if (produto.getId().equals(idProduto)) {
+
+				produto.setDescricao(obj.getDescricao());
+				produto.setImagem(obj.getImagem());
+				produto.setPreco(obj.getPreco());
+				
+				return this.anuncioProdutoRepository.save(produto);
+			}
+		}
+		
+		throw new BeanNotFoundException("Produto não informado no anúncio.");
 	}
 }
