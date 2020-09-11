@@ -9,7 +9,7 @@ import br.com.petmagnet.model.Estabelecimento;
 
 @Service
 public interface EstabelecimentoService {
-	public Estabelecimento cadastrar(Estabelecimento obj);
+	public Estabelecimento gravar(Estabelecimento obj);
 	public Estabelecimento alterar(Long id, Estabelecimento obj);
 	public Estabelecimento excluir(Long id);
 	public Estabelecimento consultarPorId(Long id);

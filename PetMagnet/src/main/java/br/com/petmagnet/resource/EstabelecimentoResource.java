@@ -26,7 +26,7 @@ public class EstabelecimentoResource {
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
 	public EstabelecimentoResDTO cadastrar(@RequestBody EstabelecimentoReqDTO estabelecimentoReqDTO) {
-		return new EstabelecimentoResDTO(this.estabelecimentoService.cadastrar(estabelecimentoReqDTO.toEntity()));
+		return new EstabelecimentoResDTO(this.estabelecimentoService.gravar(estabelecimentoReqDTO.toEntity()));
 	}
 
 	@ResponseStatus(HttpStatus.OK)

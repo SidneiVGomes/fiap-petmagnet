@@ -1,5 +1,6 @@
 package br.com.petmagnet.model;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "tb_anuncio")
@@ -35,7 +36,10 @@ public class Anuncio extends LogRegistro{
 	@Column(name = "id_anuncio")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sq_anuncio")
 	private Long id;
-
+	
+	@Column(name = "ds_accesskey", length = 30)
+	private String accessKey;
+	
 	@Column(name = "ds_titulo", length = 60)
 	@NotEmpty	
 	private String titulo;
@@ -60,4 +64,20 @@ public class Anuncio extends LogRegistro{
     @ManyToMany(mappedBy="anuncios")
     @JsonIgnore
 	private List<Publicacao> publicacoes;
+
+	public Anuncio(Long id, @NotEmpty String titulo, @NotEmpty String descricao, List<AnuncioProduto> produtos,
+			Estabelecimento estabelecimento, Colaborador colaborador, List<Publicacao> publicacoes) {
+		super();
+		this.id = id;
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.produtos = produtos;
+		this.estabelecimento = estabelecimento;
+		this.colaborador = colaborador;
+		this.publicacoes = publicacoes;
+		this.accessKey = Long.toHexString(estabelecimento.getId()) + 
+				         Long.toHexString(colaborador.getId())+
+				         Instant.now().toString().replaceAll("-", "").replaceAll(":", "");
+		
+	}    
 }

@@ -1,5 +1,7 @@
 package br.com.petmagnet.resource;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.petmagnet.dto.AnuncioResDTO;
 import br.com.petmagnet.dto.ColaboradorReqDTO;
 import br.com.petmagnet.dto.ColaboradorResDTO;
 import br.com.petmagnet.model.Colaborador;
+import br.com.petmagnet.service.AnuncioService;
 import br.com.petmagnet.service.ColaboradorService;
 import lombok.RequiredArgsConstructor;
 
@@ -23,11 +27,11 @@ import lombok.RequiredArgsConstructor;
 public class ColaboradorResource {
 	@Autowired
 	ColaboradorService colaboradorService;
-
+	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
 	public ColaboradorResDTO cadastrar(@RequestBody @Valid ColaboradorReqDTO colaboradorReqDTO) {
-		return new ColaboradorResDTO(this.colaboradorService.cadastrar((Colaborador) colaboradorReqDTO.toEntity()));
+		return new ColaboradorResDTO(this.colaboradorService.gravar((Colaborador) colaboradorReqDTO.toEntity()));
 	}
 
 	@ResponseStatus(HttpStatus.OK)

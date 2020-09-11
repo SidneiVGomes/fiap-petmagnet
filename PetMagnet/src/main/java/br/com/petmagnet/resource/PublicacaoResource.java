@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.petmagnet.dto.PublicacaoDTO;
-import br.com.petmagnet.dto.PublicacaoResponseAtivaDTO;
+import br.com.petmagnet.dto.PublicacaoAtivaResDTO;
+import br.com.petmagnet.dto.PublicacaoReqDTO;
+import br.com.petmagnet.dto.PublicacaoReqPutDTO;
 import br.com.petmagnet.model.Publicacao;
 import br.com.petmagnet.service.PublicacaoService;
 import lombok.RequiredArgsConstructor;
@@ -27,31 +29,24 @@ public class PublicacaoResource {
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
-	public Publicacao publicar(@RequestBody PublicacaoDTO publicacao) {
-		return this.publicacaoService.publicar(publicacao);
+	public Publicacao publicar(@RequestBody PublicacaoReqDTO publicacao) {
+		return this.publicacaoService.publicar((Publicacao) publicacao.toEntity());
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/{idEstabelecimento}/{idPublicacao}", method = RequestMethod.GET)	
-	public Publicacao consultarId(@PathVariable Long idEstabelecimento, @PathVariable Long idPublicacao) {
+    @RequestMapping(value = "/{idPublicacao}", method = RequestMethod.GET)	
+	public Publicacao consultarId(@RequestParam Long idEstabelecimento, @PathVariable Long idPublicacao) {
 		return this.publicacaoService.consultarPorId(idEstabelecimento, idPublicacao).get();
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/ativas", method = RequestMethod.GET)	
-	public List<PublicacaoResponseAtivaDTO> localizarPublicacoesAtivas() {
-		return this.publicacaoService.localizarPublicacoesAtivas()
-					.stream().map(publicacaoService::convertParaDTO)
-					.collect(Collectors.toList());
+    @RequestMapping(value = "/proximas", method = RequestMethod.GET)	
+	public List<PublicacaoAtivaResDTO> localizarPublicacoesAtivas(@RequestParam Long latitude, @RequestParam Long longitude) {
+		return new PublicacaoAtivaResDTO(this.publicacaoService.localizarPublicacoesAtivas()).toList();
 	}	
 	
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)	
-	public Publicacao alterar(@PathVariable Long id, @RequestBody PublicacaoDTO publicacao) {
-    	return this.publicacaoService.alterar(id, publicacao);
-	}	
-
-    @RequestMapping(value = "/{idEstabelecimento}/{idPublicacao}", method = RequestMethod.DELETE)	
-	public Publicacao excluir(@PathVariable Long idEstabelecimento, @PathVariable Long idPublicacao) {
-    	return this.publicacaoService.excluir(idEstabelecimento, idPublicacao);
+    @RequestMapping(value = "/cancelar/{idPublicacao}", method = RequestMethod.PUT)	
+	public Publicacao alterar(@PathVariable Long idPublicacao, @RequestParam Long idEstabelecimento) {
+    	return this.publicacaoService.cancelar(idEstabelecimento, idPublicacao);
 	}	
 }

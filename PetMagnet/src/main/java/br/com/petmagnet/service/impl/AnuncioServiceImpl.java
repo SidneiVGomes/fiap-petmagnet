@@ -1,5 +1,6 @@
 package br.com.petmagnet.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.petmagnet.exception.BeanNotFoundException;
 import br.com.petmagnet.model.Anuncio;
+import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.repository.AnuncioRepository;
@@ -25,29 +27,51 @@ public class AnuncioServiceImpl implements AnuncioService {
 	private AnuncioRepository anuncioRepository;
 
 	@Autowired
+	private AnuncioProdutoServiceImpl anuncioProdutoService;
+
+	@Autowired
 	private EstabelecimentoServiceImpl estabelecimentoService;
 
 	@Autowired
 	private ColaboradorServiceImpl colaboradorService;
 
 	@Override
-	public Anuncio cadastrar(Anuncio obj) {
+	public Anuncio gravar(Anuncio obj) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getEstabelecimento().getId());
 
-		Colaborador colaborador = this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getColaborador().getId()).get();
-		
-		return this.anuncioRepository.save(new Anuncio(null, obj.getTitulo(), obj.getDescricao(), null, estabelecimento, colaborador, null));
+		Colaborador colaborador = this.colaboradorService
+				.consultarPorColaborador(estabelecimento, obj.getColaborador().getId()).get();
+
+		Anuncio anuncio = this.anuncioRepository
+				.save(new Anuncio(null, obj.getTitulo(), obj.getDescricao(), null, estabelecimento, colaborador, null));
+
+		List<AnuncioProduto> produtos = new ArrayList<AnuncioProduto>();
+
+		for (AnuncioProduto produto : obj.getProdutos()) {
+			produto.setAnuncio(anuncio);
+
+			produtos.add(anuncioProdutoService.gravar(produto));
+		}
+
+		anuncio.setProdutos(produtos);
+
+		return anuncio;
 	}
 
 	@Override
-	public Anuncio excluir(Long idEstabelecimento, Long idAnuncio) {
+	public Anuncio excluir(Long idEstabelecimento, Long idAnuncio, Long idProduto) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 
 		Anuncio anuncio = this.anuncioRepository.findByEstabelecimentoAndId(estabelecimento, idAnuncio)
 				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado"));
-		
-		this.anuncioRepository.deleteById(idAnuncio);
-		return anuncio;	
+
+		if (idProduto == 0) {
+			this.anuncioRepository.deleteById(idAnuncio);
+		} else {
+			this.anuncioProdutoService.excluir(idEstabelecimento, idAnuncio, idProduto);
+		}
+
+		return anuncio;
 	}
 
 	@Override
@@ -58,7 +82,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 	@Override
 	public Optional<Anuncio> consultarPorId(Long idEstabelecimento, Long idAnuncio) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
-		
+
 		return Optional.ofNullable(this.anuncioRepository.findByEstabelecimentoAndId(estabelecimento, idAnuncio)
 				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado")));
 	}
@@ -66,24 +90,80 @@ public class AnuncioServiceImpl implements AnuncioService {
 	@Override
 	public Anuncio alterar(Anuncio obj) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getEstabelecimento().getId());
-		
+
 		this.colaboradorService.consultarPorColaborador(estabelecimento, obj.getColaborador().getId()).get();
-		
+
+		// Atualiza o Anúncio
+
 		Anuncio anuncio = this.anuncioRepository.findById(obj.getId())
 				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado"));
-		
+
 		anuncio.setTitulo(obj.getTitulo());
 		anuncio.setDescricao(obj.getDescricao());
 
-		return this.anuncioRepository.save(anuncio);
+		this.anuncioRepository.save(anuncio);
+
+		// Atualiza os Produtos do Anúncio
+
+		List<AnuncioProduto> produtosAlterados = new ArrayList<AnuncioProduto>();
+
+		anuncio.getProdutos().stream().forEach(produtoAtual -> {
+			for (AnuncioProduto produtoAlterado : obj.getProdutos()) {
+				if (produtoAtual.getId().equals(produtoAlterado.getId())) {
+					produtoAtual.setDescricao(produtoAlterado.getDescricao());
+					produtoAtual.setPreco(produtoAlterado.getPreco());
+					produtoAtual.setImagem(produtoAlterado.getImagem());
+
+					produtosAlterados.add(produtoAtual);
+				}
+			}
+		});
+
+		this.anuncioProdutoService.gravarTodos(produtosAlterados);
+
+		return anuncio;
 	}
 
 	@Override
-	public List<Anuncio> consultarPorColaborador(Long idEstabelecimento, Long idColaborador) {
+	public List<Anuncio> consultarPorColaborador(Long idEstabelecimento, Long idColaborador, Boolean publicado) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
-		
+
 		Colaborador colaborador = this.colaboradorService.consultarPorId(idColaborador).get();
-		
-		return this.anuncioRepository.findByEstabelecimentoAndColaborador(estabelecimento, colaborador);
+
+		List<Anuncio> anuncios = this.anuncioRepository.findByEstabelecimentoAndColaborador(estabelecimento,
+				colaborador);
+		List<Anuncio> anunciosNaoPaublicados = new ArrayList<Anuncio>();
+
+		for (Anuncio anuncio : anuncios) {
+			if (publicado) {
+				if (anuncio.getPublicacoes().size() != 0)
+					anunciosNaoPaublicados.add(anuncio);
+			} else {
+				if (anuncio.getPublicacoes().size() == 0)
+					anunciosNaoPaublicados.add(anuncio);
+			}
+		}
+
+		return anunciosNaoPaublicados;
+	}
+
+	@Override
+	public List<Anuncio> consultarPorEstabelecimento(Long idEstabelecimento, Boolean publicado) {
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
+
+		List<Anuncio> anuncios = this.anuncioRepository.findByEstabelecimento(estabelecimento);
+		List<Anuncio> anunciosNaoPaublicados = new ArrayList<Anuncio>();
+
+		for (Anuncio anuncio : anuncios) {
+			if (publicado) {
+				if (anuncio.getPublicacoes().size() != 0)
+					anunciosNaoPaublicados.add(anuncio);
+			} else {
+				if (anuncio.getPublicacoes().size() == 0)
+					anunciosNaoPaublicados.add(anuncio);
+			}
+		}
+
+		return anunciosNaoPaublicados;
 	}
 }

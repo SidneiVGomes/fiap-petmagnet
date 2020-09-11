@@ -37,7 +37,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 	private GeoLocationProperties geoLocationProperties;
 	
 	@Override
-	public Estabelecimento cadastrar(Estabelecimento estb) {
+	public Estabelecimento gravar(Estabelecimento estb) {
 		Endereco endereco = this.enderecoRepository.findByLogradouroAndNumeroAndBairroAndCidadeAndUF(
 				estb.getEndereco().getLogradouro(), estb.getEndereco().getNumero(), estb.getEndereco().getBairro(),
 				estb.getEndereco().getCidade(), estb.getEndereco().getUF())

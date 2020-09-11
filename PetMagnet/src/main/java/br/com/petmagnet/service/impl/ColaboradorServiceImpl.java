@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.petmagnet.dto.ColaboradorReqDTO;
-import br.com.petmagnet.dto.ColaboradorResDTO;
 import br.com.petmagnet.exception.BeanNotFoundException;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
@@ -17,7 +16,6 @@ import br.com.petmagnet.repository.ColaboradorRepository;
 import br.com.petmagnet.service.ColaboradorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -30,7 +28,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
 	private EstabelecimentoServiceImpl estabelecimentoService;
 
 	@Override
-	public Colaborador cadastrar(Colaborador obj) {
+	public Colaborador gravar(Colaborador obj) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getEstabelecimento().getId());
 
 		if (this.colaboradorRepository

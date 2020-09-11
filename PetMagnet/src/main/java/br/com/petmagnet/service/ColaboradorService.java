@@ -12,7 +12,7 @@ import br.com.petmagnet.model.Estabelecimento;
 
 @Service
 public interface ColaboradorService {
-	public Colaborador cadastrar(Colaborador obj);
+	public Colaborador gravar(Colaborador obj);
 	public Colaborador alterar(Long id, ColaboradorReqDTO obj);
 	public Colaborador excluir(Long id);
 	public Optional<Colaborador> consultarPorId(Long id);
