@@ -39,6 +39,12 @@ public class PublicacaoResource {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(method = RequestMethod.GET)
+	public List<Publicacao> consultarTodas() {
+		return this.publicacaoService.consultarTodos();
+	}	
+	
+	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/proximas", method = RequestMethod.GET)
 	public List<PublicacaoAtivaResDTO> localizarPublicacoesAtivas(@RequestParam Optional<Long> latitude,
 			@RequestParam Optional<Long> longitude) {
