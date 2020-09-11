@@ -13,9 +13,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AnuncioResDTO {
+	private String accessKey;
+	private Long idAnuncio;
 	private Long idEstabelecimento;
 	private Long idColaborador;
-	private Long idAnuncio;
 	private String titulo;
 	private String descricao;
 	private List<AnuncioProduto> produtos;
@@ -30,6 +31,7 @@ public class AnuncioResDTO {
 		this.setTitulo(obj.getTitulo());
 		this.setDescricao(obj.getDescricao());
 		this.setProdutos(obj.getProdutos());
+		this.setAccessKey(obj.getAccessKey());
 	}
 
 	public AnuncioResDTO(List<Anuncio> obj) {

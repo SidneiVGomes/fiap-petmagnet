@@ -10,8 +10,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AnuncioProdutoReqDTO implements RequestDTO{
-	private Long idEstabelecimento;
-	private Long idAnuncio;
+//	private Long idEstabelecimento;
+//	private Long idAnuncio;
+	private Long id;
 	private String descricao;
 	private Double preco;
 	private String imagem;
@@ -22,12 +23,12 @@ public class AnuncioProdutoReqDTO implements RequestDTO{
 		Anuncio anuncio = new Anuncio();
 		AnuncioProduto produto = new AnuncioProduto();
 		
-		estabelecimento.setId(this.idEstabelecimento);
-		
-		anuncio.setId(this.idAnuncio);
-		anuncio.setEstabelecimento(estabelecimento);
-		
-		produto.setAnuncio(anuncio);
+//		estabelecimento.setId(this.idEstabelecimento);
+//		
+//		anuncio.setId(this.idAnuncio);
+//		anuncio.setEstabelecimento(estabelecimento);
+//		
+//		produto.setAnuncio(anuncio);
 		produto.setDescricao(this.descricao);
 		produto.setPreco(this.preco);
 		produto.setImagem(this.imagem);

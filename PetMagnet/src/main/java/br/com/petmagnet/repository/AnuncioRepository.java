@@ -13,4 +13,5 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
 	Optional<Anuncio> findByTitulo(String titulo);
 	Optional<Anuncio> findByEstabelecimentoAndId(Estabelecimento estabelecimento, Long idAnuncio);
 	List<Anuncio> findByEstabelecimentoAndColaborador(Estabelecimento estabelecimento, Colaborador colaborador);
+	List<Anuncio> findByEstabelecimento(Estabelecimento estabelecimento);
 }

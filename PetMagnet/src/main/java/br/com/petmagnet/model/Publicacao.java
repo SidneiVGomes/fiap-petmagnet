@@ -64,4 +64,7 @@ public class Publicacao extends LogRegistro {
 			   inverseJoinColumns = @JoinColumn(name = "id_anuncio"))
 	@JsonIgnore
 	private List<Anuncio> anuncios;	
+	
+	@Column(name = "cancelado")
+	private Boolean cancelado;
 }

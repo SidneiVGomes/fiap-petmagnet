@@ -1,9 +1,6 @@
 package br.com.petmagnet.service.impl;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +26,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 	private AnuncioServiceImpl anuncioService;
 
 	@Override
-	public AnuncioProduto cadastrar(AnuncioProduto obj) {
+	public AnuncioProduto gravar(AnuncioProduto obj) {
 		Anuncio anuncio = this.anuncioService.consultarPorId(
 				obj.getAnuncio().getEstabelecimento().getId(), 
 				obj.getAnuncio().getId()
@@ -41,7 +38,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 	}
 
 	@Override
-	public AnuncioProduto excluir(Long idProduto) {
+	public AnuncioProduto excluir(Long idEstabelecimento, Long idAnuncio, Long idProduto) {
 		return this.anuncioProdutoRepository.findById(idProduto)
 				.map(anuncioProdutos -> {
 					this.anuncioProdutoRepository.deleteById(idProduto);
@@ -55,7 +52,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 	}
 
 	@Override
-	public AnuncioProduto consultarPorId(Long idProduto) {
+	public AnuncioProduto consultarPorId(Long idAnuncio, Long idEstabelecimento, Long idProduto) {
 		return this.anuncioProdutoRepository.findById(idProduto)
 			.orElseThrow(() -> new BeanNotFoundException("Produto não informado no anúncio."));
 	}
@@ -76,5 +73,14 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 		}
 		
 		throw new BeanNotFoundException("Produto não informado no anúncio.");
+	}
+
+	@Override
+	public List<AnuncioProduto> gravarTodos(List<AnuncioProduto> obj) {
+		obj.stream().forEach(produto -> {
+			this.anuncioService.consultarPorId(produto.getAnuncio().getEstabelecimento().getId(), produto.getAnuncio().getId());
+		});
+		
+		return this.anuncioProdutoRepository.saveAll(obj);
 	}
 }
