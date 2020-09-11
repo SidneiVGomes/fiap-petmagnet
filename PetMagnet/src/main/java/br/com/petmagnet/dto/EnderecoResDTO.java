@@ -1,6 +1,10 @@
 package br.com.petmagnet.dto;
 
+import javax.persistence.Column;
+
 import org.modelmapper.ModelMapper;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.petmagnet.model.Endereco;
 import lombok.AllArgsConstructor;
@@ -18,7 +22,9 @@ public class EnderecoResDTO {
 	private String UF;
 	private String pais;
 	private String cep;
-
+	private String latitude;
+	private String longitude;
+	
 	public EnderecoResDTO(Endereco endereco) {
 		this.setLogradouro(endereco.getLogradouro());
 		this.setNumero(endereco.getNumero());
@@ -27,5 +33,7 @@ public class EnderecoResDTO {
 		this.setUF(endereco.getUF());
 		this.setPais(endereco.getPais());
 		this.setCep(endereco.getCep());
+		this.setLatitude(endereco.getLatitude());
+		this.setLongitude(endereco.getLongitude());
 	}	
 }
