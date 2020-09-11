@@ -15,6 +15,9 @@ public interface PublicacaoRepository extends JpaRepository<Publicacao, Long> {
 	Optional<Publicacao> findByEstabelecimentoAndId(Estabelecimento estabelecimento, Long idPublicacao);
 
 	@Query(name = "findByPublicacoesAtivas",
-		   value = "SELECT p FROM Publicacao p WHERE p.dtPublicacao <= :dtA and p.dtEncerramento >= :dtA")
+		   value = "SELECT p FROM Publicacao p " +
+	               "WHERE p.dtPublicacao <= :dtA " +
+				   "and p.dtEncerramento >= :dtA " +
+	               "and cancelado = false")
 	public List<Publicacao> findByPublicacoesAtivas(@Param("dtA") Date dtAtual);
 }

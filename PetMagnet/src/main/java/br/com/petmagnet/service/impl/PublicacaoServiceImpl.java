@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.petmagnet.dto.PublicacaoAtivaResDTO;
 import br.com.petmagnet.exception.BeanNotFoundException;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
@@ -99,7 +98,7 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 	}
 
 	@Override
-	public List<Publicacao> localizarPublicacoesAtivas() {
+	public List<Publicacao> localizarPublicacoesProximas(Long latitude, Long longitude) {
 		LocalDateTime agora = LocalDateTime.now();
 		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
