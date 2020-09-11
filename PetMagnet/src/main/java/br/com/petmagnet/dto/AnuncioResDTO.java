@@ -13,6 +13,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AnuncioResDTO {
+	@JsonIgnore
 	private String accessKey;
 	private Long idAnuncio;
 	private Long idEstabelecimento;

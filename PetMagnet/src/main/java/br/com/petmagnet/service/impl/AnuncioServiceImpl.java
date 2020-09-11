@@ -76,7 +76,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 
 	@Override
 	public List<Anuncio> consultarTodos() {
-		return null;
+		return this.anuncioRepository.findAll();
 	}
 
 	@Override

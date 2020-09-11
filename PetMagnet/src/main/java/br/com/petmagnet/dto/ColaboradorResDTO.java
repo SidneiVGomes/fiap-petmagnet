@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ColaboradorResDTO implements ResponseDTO {
+public class ColaboradorResDTO {
 	private Long id;	
 	private String nome;
 	private String senha;
@@ -36,9 +36,8 @@ public class ColaboradorResDTO implements ResponseDTO {
 		this.colaboradores = obj;
 	}
 
-	@Override
-	public List<Object> toList() {
-		List<Object> listDTO = new ArrayList<Object>();
+	public List<ColaboradorResDTO> toList() {
+		List<ColaboradorResDTO> listDTO = new ArrayList<ColaboradorResDTO>();
 		
 		for (Colaborador e : this.colaboradores) {
 			listDTO.add(new ColaboradorResDTO(e));

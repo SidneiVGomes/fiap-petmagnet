@@ -68,7 +68,7 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
 	@Override
 	public List<Publicacao> consultarTodos() {
-		return null;
+		return this.publicacaoRepository.findAll();
 	}
 
 	@Override

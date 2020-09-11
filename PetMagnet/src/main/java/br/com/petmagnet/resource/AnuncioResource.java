@@ -52,6 +52,12 @@ public class AnuncioResource {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(method = RequestMethod.GET)
+	public List<AnuncioResDTO> consultarAnunciosPorColaborador() {
+		return new AnuncioResDTO(this.anuncioService.consultarTodos()).toList();
+	}	
+		
+	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/{idAnuncio}", method = RequestMethod.DELETE)
 	public AnuncioResDTO excluir(@PathVariable Long idAnuncio, @RequestParam Long idEstabelecimento,
 			@RequestParam Optional<Long> idProduto) {
