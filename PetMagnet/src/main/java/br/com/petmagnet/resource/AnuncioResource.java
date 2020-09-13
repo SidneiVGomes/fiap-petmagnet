@@ -18,9 +18,7 @@ import br.com.petmagnet.dto.AnuncioReqPutDTO;
 import br.com.petmagnet.dto.AnuncioResDTO;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.service.AnuncioService;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("API/anuncios")
 public class AnuncioResource {
@@ -30,7 +28,7 @@ public class AnuncioResource {
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
 	public AnuncioResDTO cadastrar(@RequestBody AnuncioReqDTO anuncioDTO) {
-		return new AnuncioResDTO(this.anuncioService.gravar((Anuncio) anuncioDTO.toEntity()));
+		return new AnuncioResDTO(this.anuncioService.gravar(anuncioDTO.toEntity()));
 	}
 
 	@ResponseStatus(HttpStatus.OK)

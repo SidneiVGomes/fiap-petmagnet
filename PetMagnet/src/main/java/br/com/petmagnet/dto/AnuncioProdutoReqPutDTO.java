@@ -6,12 +6,8 @@ import br.com.petmagnet.dto.interfac.RequestDTO;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.model.Estabelecimento;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class AnuncioProdutoReqPutDTO implements RequestDTO{
+public class AnuncioProdutoReqPutDTO implements RequestDTO<AnuncioProduto> {
 	@JsonIgnore
 	private Long idEstabelecimento;
 	@JsonIgnore
@@ -23,7 +19,7 @@ public class AnuncioProdutoReqPutDTO implements RequestDTO{
 	private String imagem;
 
 	@Override
-	public Object toEntity() {
+	public AnuncioProduto toEntity() {
 		Estabelecimento estabelecimento = new Estabelecimento();
 		Anuncio anuncio = new Anuncio();
 		AnuncioProduto produto = new AnuncioProduto();
@@ -41,11 +37,74 @@ public class AnuncioProdutoReqPutDTO implements RequestDTO{
 		return produto;
 	}	
 	
-	public Object toEntity(Long idEstabelecimento, Long idAnuncio, Long idProduto) {
+	public AnuncioProduto toEntity(Long idEstabelecimento, Long idAnuncio, Long idProduto) {
 		this.setIdEstabelecimento(idEstabelecimento);
 		this.setIdAnuncio(idAnuncio);
 		this.setIdProduto(idProduto);
 		
 		return this.toEntity();
+	}
+
+	public AnuncioProdutoReqPutDTO(Long idEstabelecimento, Long idAnuncio, Long idProduto, String descricao,
+			Double preco, String imagem) {
+		super();
+		this.setIdEstabelecimento(idEstabelecimento);
+		this.setIdAnuncio(idAnuncio);
+		this.setIdProduto(idProduto);
+		this.setDescricao(descricao);
+		this.setPreco(preco);
+		this.setImagem(imagem);
+	}
+
+	public AnuncioProdutoReqPutDTO() {
+		super();
+	}
+
+	public Long getIdEstabelecimento() {
+		return idEstabelecimento;
+	}
+
+	public void setIdEstabelecimento(Long idEstabelecimento) {
+		this.idEstabelecimento = idEstabelecimento;
+	}
+
+	public Long getIdAnuncio() {
+		return idAnuncio;
+	}
+
+	public void setIdAnuncio(Long idAnuncio) {
+		this.idAnuncio = idAnuncio;
+	}
+
+	public Long getIdProduto() {
+		return idProduto;
+	}
+
+	public void setIdProduto(Long idProduto) {
+		this.idProduto = idProduto;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
 	}	
 }

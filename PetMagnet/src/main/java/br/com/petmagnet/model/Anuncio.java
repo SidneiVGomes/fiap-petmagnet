@@ -18,14 +18,8 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import groovy.transform.EqualsAndHashCode;
 
-@Data
-@NoArgsConstructor
-//@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "tb_anuncio")
@@ -38,6 +32,7 @@ public class Anuncio extends LogRegistro{
 	private Long id;
 	
 	@Column(name = "ds_accesskey", length = 30)
+	@JsonIgnore
 	private String accessKey;
 	
 	@Column(name = "ds_titulo", length = 60)
@@ -53,16 +48,13 @@ public class Anuncio extends LogRegistro{
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_estabelecimento")
-	@JsonIgnore
 	private Estabelecimento estabelecimento;
 
 	@ManyToOne()
 	@JoinColumn(name = "id_colaborador")
-	@JsonIgnore
 	private Colaborador colaborador;
  
     @ManyToMany(mappedBy="anuncios")
-    @JsonIgnore
 	private List<Publicacao> publicacoes;
 
 	public Anuncio(Long id, @NotEmpty String titulo, @NotEmpty String descricao, List<AnuncioProduto> produtos,
@@ -79,5 +71,74 @@ public class Anuncio extends LogRegistro{
 				         Long.toHexString(colaborador.getId())+
 				         Instant.now().toString().replaceAll("-", "").replaceAll(":", "");
 		
-	}    
+	}
+
+	public Anuncio() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getAccessKey() {
+		return accessKey;
+	}
+
+	public void setAccessKey(String accessKey) {
+		this.accessKey = accessKey;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public List<AnuncioProduto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<AnuncioProduto> produtos) {
+		this.produtos = produtos;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public List<Publicacao> getPublicacoes() {
+		return publicacoes;
+	}
+
+	public void setPublicacoes(List<Publicacao> publicacoes) {
+		this.publicacoes = publicacoes;
+	}
+
 }

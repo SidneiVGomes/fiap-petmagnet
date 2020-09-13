@@ -3,32 +3,21 @@ package br.com.petmagnet.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.petmagnet.dto.interfac.ResponseDTO;
 import br.com.petmagnet.model.Colaborador;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ColaboradorResDTO {
-	private Long id;	
+	private Long idColaborador;	
 	private String nome;
-	private String senha;
 	private Long idEstabelecimento;
 
 	@JsonIgnore
 	private List<Colaborador> colaboradores;
 	
 	public ColaboradorResDTO(Colaborador obj) {
-		this.setId(obj.getId());
+		this.setIdColaborador(obj.getId());
 		this.setNome(obj.getNome());
-		this.setSenha(obj.getSenha());
 		this.setIdEstabelecimento(obj.getEstabelecimento().getId());
 	}
 
@@ -44,5 +33,40 @@ public class ColaboradorResDTO {
 		}
 		
 		return listDTO;
+	}
+
+	public ColaboradorResDTO(Long id, String nome, String senha, Long idEstabelecimento) {
+		super();
+		this.setIdColaborador(idColaborador);
+		this.setNome(nome);
+		this.setIdEstabelecimento(idEstabelecimento);
+	}
+
+	public ColaboradorResDTO() {
+		super();
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Long getIdEstabelecimento() {
+		return idEstabelecimento;
+	}
+
+	public void setIdEstabelecimento(Long idEstabelecimento) {
+		this.idEstabelecimento = idEstabelecimento;
+	}
+
+	public Long getIdColaborador() {
+		return idColaborador;
+	}
+
+	public void setIdColaborador(Long idColaborador) {
+		this.idColaborador = idColaborador;
 	}
 }

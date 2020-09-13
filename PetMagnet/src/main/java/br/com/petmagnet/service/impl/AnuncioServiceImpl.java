@@ -8,17 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.petmagnet.exception.BeanNotFoundException;
+import br.com.petmagnet.exception.AppBeanNotFoundException;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.repository.AnuncioRepository;
 import br.com.petmagnet.service.AnuncioService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import groovy.util.logging.Slf4j;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 @Transactional
@@ -63,7 +61,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 
 		Anuncio anuncio = this.anuncioRepository.findByEstabelecimentoAndId(estabelecimento, idAnuncio)
-				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado"));
+				.orElseThrow(() -> new AppBeanNotFoundException("Anúncio não Cadastrado"));
 
 		if (idProduto == 0) {
 			this.anuncioRepository.deleteById(idAnuncio);
@@ -84,7 +82,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 
 		return Optional.ofNullable(this.anuncioRepository.findByEstabelecimentoAndId(estabelecimento, idAnuncio)
-				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado")));
+				.orElseThrow(() -> new AppBeanNotFoundException("Anúncio não Cadastrado")));
 	}
 
 	@Override
@@ -96,7 +94,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 		// Atualiza o Anúncio
 
 		Anuncio anuncio = this.anuncioRepository.findById(obj.getId())
-				.orElseThrow(() -> new BeanNotFoundException("Anúncio não Cadastrado"));
+				.orElseThrow(() -> new AppBeanNotFoundException("Anúncio não Cadastrado"));
 
 		anuncio.setTitulo(obj.getTitulo());
 		anuncio.setDescricao(obj.getDescricao());

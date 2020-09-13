@@ -1,6 +1,6 @@
 package br.com.petmagnet.util;
 
-public class Localizacao {
+public class AppLocalizacaoModel {
 	String longitude;
 	String latitude;
 	

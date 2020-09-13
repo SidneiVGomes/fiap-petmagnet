@@ -14,16 +14,16 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
 
-public class GeoLocalizacao {
+public class AppLocalizacao {
 	GeoApiContext context = null;
 
-	public GeoLocalizacao(String geoLocationApiKey) {
+	public AppLocalizacao(String geoLocationApiKey) {
 		context = new GeoApiContext.Builder().apiKey( geoLocationApiKey ).build();
 	}
 	
-	public Localizacao getGeoLocalizacao(String CEP) throws ApiException, InterruptedException, IOException,
+	public AppLocalizacaoModel getGeoLocalizacao(String CEP) throws ApiException, InterruptedException, IOException,
 			ParseException, org.json.simple.parser.ParseException {
-		Localizacao loc = new Localizacao();
+		AppLocalizacaoModel loc = new AppLocalizacaoModel();
 
 		GeocodingResult[] results = GeocodingApi.geocode(context, CEP).await();
 

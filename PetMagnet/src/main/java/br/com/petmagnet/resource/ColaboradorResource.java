@@ -17,9 +17,7 @@ import br.com.petmagnet.dto.ColaboradorReqDTO;
 import br.com.petmagnet.dto.ColaboradorResDTO;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.service.ColaboradorService;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("API/colaboradores")
 public class ColaboradorResource {

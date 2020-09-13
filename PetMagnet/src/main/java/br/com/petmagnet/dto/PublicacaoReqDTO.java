@@ -9,12 +9,8 @@ import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.model.Publicacao;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class PublicacaoReqDTO implements RequestDTO{
+public class PublicacaoReqDTO implements RequestDTO<Publicacao>{
 	private Long idEstabelecimento;
 	private Long idColaborador;
 	private Long idAnuncio;
@@ -22,7 +18,7 @@ public class PublicacaoReqDTO implements RequestDTO{
 	private Date dtEncerramento;
 	
 	@Override
-	public Object toEntity() {
+	public Publicacao toEntity() {
 		Estabelecimento estabelecimento = new Estabelecimento();
 		estabelecimento.setId(this.idEstabelecimento);
 		
@@ -43,5 +39,59 @@ public class PublicacaoReqDTO implements RequestDTO{
 		publicacao.setDtEncerramento(this.dtEncerramento);
 		
 		return publicacao;
+	}
+
+	public PublicacaoReqDTO(Long idEstabelecimento, Long idColaborador, Long idAnuncio, Date dtPublicacao,
+			Date dtEncerramento) {
+		super();
+		this.setIdEstabelecimento(idEstabelecimento);
+		this.setIdColaborador(idColaborador);
+		this.setIdAnuncio(idAnuncio);
+		this.setDtPublicacao(dtPublicacao);
+		this.setDtEncerramento(dtEncerramento);
+	}
+
+	public PublicacaoReqDTO() {
+		super();
+	}
+
+	public Long getIdEstabelecimento() {
+		return idEstabelecimento;
+	}
+
+	public void setIdEstabelecimento(Long idEstabelecimento) {
+		this.idEstabelecimento = idEstabelecimento;
+	}
+
+	public Long getIdColaborador() {
+		return idColaborador;
+	}
+
+	public void setIdColaborador(Long idColaborador) {
+		this.idColaborador = idColaborador;
+	}
+
+	public Long getIdAnuncio() {
+		return idAnuncio;
+	}
+
+	public void setIdAnuncio(Long idAnuncio) {
+		this.idAnuncio = idAnuncio;
+	}
+
+	public Date getDtPublicacao() {
+		return dtPublicacao;
+	}
+
+	public void setDtPublicacao(Date dtPublicacao) {
+		this.dtPublicacao = dtPublicacao;
+	}
+
+	public Date getDtEncerramento() {
+		return dtEncerramento;
+	}
+
+	public void setDtEncerramento(Date dtEncerramento) {
+		this.dtEncerramento = dtEncerramento;
 	}	
 }

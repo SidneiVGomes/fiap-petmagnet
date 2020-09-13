@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ResourceExpectionHandler {
+public class AppResourceExpectionHandler {
 	
-	@ExceptionHandler(BeanNotFoundException.class)
-	public ResponseEntity<ErrorMessageDefault> entityNotFound(BeanNotFoundException e, HttpServletRequest request){
-		ErrorMessageDefault errorMsg = new ErrorMessageDefault();
+	@ExceptionHandler(AppBeanNotFoundException.class)
+	public ResponseEntity<AppErrorMessageDefault> entityNotFound(AppBeanNotFoundException e, HttpServletRequest request){
+		AppErrorMessageDefault errorMsg = new AppErrorMessageDefault();
 		errorMsg.setTimestamp(Instant.now());
 		errorMsg.setStatus(HttpStatus.NOT_FOUND.value());
 		errorMsg.setError("Recurso Não Localizado");
