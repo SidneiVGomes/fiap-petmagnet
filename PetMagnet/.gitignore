@@ -29,3 +29,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### PETMAGNET ###
+/BKP
+/PetManagement_v2
+/PetMagnet-com LOMBOK.zip
+/PetMagnet-sem LOMBOK.zip
+/PetManagement_v2.zip
