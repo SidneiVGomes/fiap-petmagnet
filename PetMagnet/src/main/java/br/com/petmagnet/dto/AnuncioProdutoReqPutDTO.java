@@ -1,5 +1,5 @@
 package br.com.petmagnet.dto;
- 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.petmagnet.dto.interfac.RequestDTO;

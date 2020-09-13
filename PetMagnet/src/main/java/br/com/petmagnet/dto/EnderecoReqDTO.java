@@ -1,5 +1,5 @@
 package br.com.petmagnet.dto;
- 
+
 import org.modelmapper.ModelMapper;
 
 import br.com.petmagnet.dto.interfac.RequestDTO;

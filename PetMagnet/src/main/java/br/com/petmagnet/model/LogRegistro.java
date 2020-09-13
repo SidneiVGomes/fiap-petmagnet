@@ -1,5 +1,5 @@
 package br.com.petmagnet.model;
- 
+
 import java.io.Serializable;
 import java.time.Instant;
 

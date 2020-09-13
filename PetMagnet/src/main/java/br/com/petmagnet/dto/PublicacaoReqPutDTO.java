@@ -1,5 +1,5 @@
 package br.com.petmagnet.dto;
- 
+
 import java.util.Date;
 
 import org.modelmapper.ModelMapper;

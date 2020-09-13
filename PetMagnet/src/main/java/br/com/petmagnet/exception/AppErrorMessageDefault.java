@@ -1,5 +1,5 @@
 package br.com.petmagnet.exception;
- 
+
 import java.io.Serializable;
 import java.time.Instant;
 

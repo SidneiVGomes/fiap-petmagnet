@@ -1,5 +1,5 @@
 package br.com.petmagnet.dto;
- 
+
 import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 

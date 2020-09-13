@@ -1,5 +1,5 @@
 package br.com.petmagnet.dto;
-
+ 
 import br.com.petmagnet.dto.interfac.RequestDTO;
 import br.com.petmagnet.model.AnuncioProduto;
  
