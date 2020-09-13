@@ -2,7 +2,7 @@ package br.com.petmagnet.dto;
 
 import br.com.petmagnet.dto.interfac.RequestDTO;
 import br.com.petmagnet.model.AnuncioProduto;
-
+ 
 public class AnuncioProdutoReqDTO implements RequestDTO<AnuncioProduto> {
 	private Long id;
 	private String descricao;
