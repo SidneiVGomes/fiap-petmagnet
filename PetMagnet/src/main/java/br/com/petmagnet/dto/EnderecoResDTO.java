@@ -1,5 +1,5 @@
 package br.com.petmagnet.dto;
-
+ 
 import br.com.petmagnet.model.Endereco;
 
 public class EnderecoResDTO {

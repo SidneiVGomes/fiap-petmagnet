@@ -1,5 +1,5 @@
 package br.com.petmagnet.config;
-
+ 
 public class GeoLocationProperties {
 	String apiKey;
 

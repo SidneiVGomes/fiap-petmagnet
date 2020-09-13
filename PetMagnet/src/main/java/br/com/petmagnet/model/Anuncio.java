@@ -2,7 +2,7 @@ package br.com.petmagnet.model;
 
 import java.time.Instant;
 import java.util.List;
-
+ 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
