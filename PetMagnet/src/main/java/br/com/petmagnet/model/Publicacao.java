@@ -19,15 +19,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "tb_publicacao")
 public class Publicacao extends LogRegistro {
@@ -50,21 +41,91 @@ public class Publicacao extends LogRegistro {
 
 	@ManyToOne()
 	@JoinColumn(name = "id_estabelecimento")
-	@JsonIgnore
 	private Estabelecimento estabelecimento;	
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_colaborador")
-	@JsonIgnore
 	private Colaborador colaborador;
 	
+	@JsonIgnore
 	@ManyToMany()
 	@JoinTable(name = "tb_publicacao_anuncio", 
 			   joinColumns = @JoinColumn(name = "id_publicacao"), 
 			   inverseJoinColumns = @JoinColumn(name = "id_anuncio"))
-	@JsonIgnore
 	private List<Anuncio> anuncios;	
 	
 	@Column(name = "cancelado")
 	private Boolean cancelado;
+
+	public Publicacao(Long id, Date dtPublicacao, Date dtEncerramento,
+			Estabelecimento estabelecimento, Colaborador colaborador, List<Anuncio> anuncios, Boolean cancelado) {
+		super();
+		this.id = id;
+		this.dtPublicacao = dtPublicacao;
+		this.dtEncerramento = dtEncerramento;
+		this.estabelecimento = estabelecimento;
+		this.colaborador = colaborador;
+		this.anuncios = anuncios;
+		this.cancelado = cancelado;
+	}
+
+	public Publicacao() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getDtPublicacao() {
+		return dtPublicacao;
+	}
+
+	public void setDtPublicacao(Date dtPublicacao) {
+		this.dtPublicacao = dtPublicacao;
+	}
+
+	public Date getDtEncerramento() {
+		return dtEncerramento;
+	}
+
+	public void setDtEncerramento(Date dtEncerramento) {
+		this.dtEncerramento = dtEncerramento;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public List<Anuncio> getAnuncios() {
+		return anuncios;
+	}
+
+	public void setAnuncios(List<Anuncio> anuncios) {
+		this.anuncios = anuncios;
+	}
+
+	public Boolean getCancelado() {
+		return cancelado;
+	}
+
+	public void setCancelado(Boolean cancelado) {
+		this.cancelado = cancelado;
+	}
 }

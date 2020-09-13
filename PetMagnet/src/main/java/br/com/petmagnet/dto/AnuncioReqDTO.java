@@ -3,19 +3,13 @@ package br.com.petmagnet.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-
 import br.com.petmagnet.dto.interfac.RequestDTO;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class AnuncioReqDTO implements RequestDTO{
+public class AnuncioReqDTO implements RequestDTO<Anuncio> {
 	private Long idEstabelecimento;
 	private Long idColaborador;
 	private String titulo;
@@ -23,7 +17,7 @@ public class AnuncioReqDTO implements RequestDTO{
 	private List<AnuncioProdutoReqDTO> produtos;
 	
 	@Override
-	public Object toEntity() {
+	public Anuncio toEntity() {
 		Estabelecimento estabelecimento = new Estabelecimento();
 		estabelecimento.setId(this.idEstabelecimento);
 
@@ -52,5 +46,59 @@ public class AnuncioReqDTO implements RequestDTO{
 		anuncio.setProdutos(anuncioProdutos);
 
 		return anuncio;
+	}
+
+	public AnuncioReqDTO(Long idEstabelecimento, Long idColaborador, String titulo, String descricao,
+			List<AnuncioProdutoReqDTO> produtos) {
+		super();
+		this.setIdEstabelecimento(idEstabelecimento);
+		this.setIdColaborador(idColaborador);
+		this.setTitulo(titulo);
+		this.setDescricao(descricao);
+		this.setProdutos(produtos);
+	}
+
+	public AnuncioReqDTO() {
+		super();
+	}
+
+	public Long getIdEstabelecimento() {
+		return idEstabelecimento;
+	}
+
+	public void setIdEstabelecimento(Long idEstabelecimento) {
+		this.idEstabelecimento = idEstabelecimento;
+	}
+
+	public Long getIdColaborador() {
+		return idColaborador;
+	}
+
+	public void setIdColaborador(Long idColaborador) {
+		this.idColaborador = idColaborador;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public List<AnuncioProdutoReqDTO> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<AnuncioProdutoReqDTO> produtos) {
+		this.produtos = produtos;
 	}
 }

@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.petmagnet.dto.PublicacaoAtivaResDTO;
 import br.com.petmagnet.dto.PublicacaoReqDTO;
+import br.com.petmagnet.dto.PublicacaoResDTO;
 import br.com.petmagnet.model.Publicacao;
 import br.com.petmagnet.service.PublicacaoService;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("API/publicacoes")
 public class PublicacaoResource {
@@ -28,33 +26,37 @@ public class PublicacaoResource {
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
-	public Publicacao publicar(@RequestBody PublicacaoReqDTO publicacao) {
-		return this.publicacaoService.publicar((Publicacao) publicacao.toEntity());
+	public PublicacaoResDTO publicar(@RequestBody PublicacaoReqDTO publicacao) {
+		return new PublicacaoResDTO(this.publicacaoService.publicar((Publicacao) publicacao.toEntity()));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/{idPublicacao}", method = RequestMethod.GET)
-	public Publicacao consultarId(@RequestParam Long idEstabelecimento, @PathVariable Long idPublicacao) {
-		return this.publicacaoService.consultarPorId(idEstabelecimento, idPublicacao).get();
+	public PublicacaoResDTO consultarId(@RequestParam Long idEstabelecimento, @PathVariable Long idPublicacao) {
+		return new PublicacaoResDTO(this.publicacaoService.consultarPorId(idEstabelecimento, idPublicacao).get());
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Publicacao> consultarTodas() {
-		return this.publicacaoService.consultarTodos();
-	}	
-	
+	@RequestMapping(value = "/estabelecimento/{idEstabelecimento}", method = RequestMethod.GET)
+	public List<PublicacaoResDTO> consultarTodas(@PathVariable Long idEstabelecimento,
+			@RequestParam(defaultValue = "false") Optional<Boolean> encerrado) {
+		return new PublicacaoResDTO(
+				this.publicacaoService.consultarTodos(idEstabelecimento, encerrado.orElse(Boolean.valueOf(false))))
+						.toList();
+	}
+
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/proximas", method = RequestMethod.GET)
-	public List<PublicacaoAtivaResDTO> localizarPublicacoesAtivas(@RequestParam Optional<Long> latitude,
+	public List<PublicacaoResDTO> localizarPublicacoesAtivas(@RequestParam Optional<Long> latitude,
 			@RequestParam Optional<Long> longitude) {
-		return new PublicacaoAtivaResDTO(this.publicacaoService
+
+		return new PublicacaoResDTO(this.publicacaoService
 				.localizarPublicacoesProximas(latitude.orElse(Long.valueOf(0)), longitude.orElse(Long.valueOf(0))))
 						.toList();
 	}
 
 	@RequestMapping(value = "/cancelar/{idPublicacao}", method = RequestMethod.PUT)
-	public Publicacao alterar(@PathVariable Long idPublicacao, @RequestParam Long idEstabelecimento) {
-		return this.publicacaoService.cancelar(idEstabelecimento, idPublicacao);
+	public PublicacaoResDTO alterar(@PathVariable Long idPublicacao, @RequestParam Long idEstabelecimento) {
+		return new PublicacaoResDTO(this.publicacaoService.cancelar(idEstabelecimento, idPublicacao));
 	}
 }

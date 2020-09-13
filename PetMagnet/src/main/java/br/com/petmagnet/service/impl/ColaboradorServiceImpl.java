@@ -9,15 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.petmagnet.dto.ColaboradorReqDTO;
-import br.com.petmagnet.exception.BeanNotFoundException;
+import br.com.petmagnet.exception.AppBeanNotFoundException;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.repository.ColaboradorRepository;
 import br.com.petmagnet.service.ColaboradorService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import groovy.util.logging.Slf4j;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 @Transactional
@@ -33,7 +31,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
 
 		if (this.colaboradorRepository
 				.findByNomeAndSenhaAndEstabelecimento(obj.getNome(), obj.getSenha(), estabelecimento).isPresent()) {
-			throw new BeanNotFoundException("Colaborador já cadastrado");
+			throw new AppBeanNotFoundException("Colaborador já cadastrado");
 		}
 		
 		Colaborador colaborador = new ModelMapper().map(obj, Colaborador.class);
@@ -50,7 +48,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
 			colaborador.setSenha(obj.getSenha());
 
 			return this.colaboradorRepository.save(colaborador);
-		}).orElseThrow(() -> new BeanNotFoundException("Colaborador não cadastrado"));
+		}).orElseThrow(() -> new AppBeanNotFoundException("Colaborador não cadastrado"));
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
 		return this.colaboradorRepository.findById(id).map(colaborador -> {
 			this.colaboradorRepository.deleteById(id);
 			return colaborador;
-		}).orElseThrow(() -> new BeanNotFoundException("Colaborador não cadastrado"));
+		}).orElseThrow(() -> new AppBeanNotFoundException("Colaborador não cadastrado"));
 	}
 
 	@Override
@@ -69,12 +67,12 @@ public class ColaboradorServiceImpl implements ColaboradorService {
 	@Override
 	public Optional<Colaborador> consultarPorId(Long id) {
 		return Optional.ofNullable(this.colaboradorRepository.findById(id)
-				.orElseThrow(() -> new BeanNotFoundException("Colaborador não Cadastrado")));
+				.orElseThrow(() -> new AppBeanNotFoundException("Colaborador não Cadastrado")));
 	}
 
 	@Override
 	public Optional<Colaborador> consultarPorColaborador(Estabelecimento estabelecimento, Long idColaborador) {
 		return Optional.ofNullable(this.colaboradorRepository.findByEstabelecimentoAndId(estabelecimento, idColaborador)
-				.orElseThrow(() -> new BeanNotFoundException("Colaborador não Cadastrado")));
+				.orElseThrow(() -> new AppBeanNotFoundException("Colaborador não Cadastrado")));
 	}
 }

@@ -14,16 +14,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CNPJ;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
  
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "tb_estabelecimento")
 public class Estabelecimento extends LogRegistro {
@@ -50,5 +41,60 @@ public class Estabelecimento extends LogRegistro {
 	@ManyToOne
 	@JoinColumn(name = "id_endereco")
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
-	private Endereco endereco;	
+	private Endereco endereco;
+
+	public Estabelecimento(Long id, @CNPJ @NotEmpty String cnpj,
+			@NotEmpty @Length(min = 5, max = 60, message = "O nome deve ter entre {min} a {max} caracteres") String nome,
+			String complEndereco, Endereco endereco) {
+		super();
+		this.id = id;
+		this.cnpj = cnpj;
+		this.nome = nome;
+		this.complEndereco = complEndereco;
+		this.endereco = endereco;
+	}
+
+	public Estabelecimento() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getComplEndereco() {
+		return complEndereco;
+	}
+
+	public void setComplEndereco(String complEndereco) {
+		this.complEndereco = complEndereco;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
 }

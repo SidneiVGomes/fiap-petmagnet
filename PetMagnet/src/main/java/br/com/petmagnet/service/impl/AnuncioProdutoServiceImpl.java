@@ -6,15 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.petmagnet.exception.BeanNotFoundException;
+import br.com.petmagnet.exception.AppBeanNotFoundException;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.repository.AnuncioProdutoRepository;
 import br.com.petmagnet.service.AnuncioProdutoService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import groovy.util.logging.Slf4j;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 @Transactional
@@ -43,7 +41,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 				.map(anuncioProdutos -> {
 					this.anuncioProdutoRepository.deleteById(idProduto);
 					return anuncioProdutos;
-				}).orElseThrow(() -> new BeanNotFoundException("Produto não informado no anúncio."));
+				}).orElseThrow(() -> new AppBeanNotFoundException("Produto não informado no anúncio."));
 	}
 
 	@Override
@@ -54,7 +52,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 	@Override
 	public AnuncioProduto consultarPorId(Long idAnuncio, Long idEstabelecimento, Long idProduto) {
 		return this.anuncioProdutoRepository.findById(idProduto)
-			.orElseThrow(() -> new BeanNotFoundException("Produto não informado no anúncio."));
+			.orElseThrow(() -> new AppBeanNotFoundException("Produto não informado no anúncio."));
 	}
 
 	@Override
@@ -72,7 +70,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 			}
 		}
 		
-		throw new BeanNotFoundException("Produto não informado no anúncio.");
+		throw new AppBeanNotFoundException("Produto não informado no anúncio.");
 	}
 
 	@Override

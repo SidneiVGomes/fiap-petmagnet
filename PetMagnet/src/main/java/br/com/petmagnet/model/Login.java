@@ -6,12 +6,6 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Service;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-@Data
-//@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Service
 public class Login {
 	@NotBlank(message = "{campo.obrigatorio}")
@@ -31,9 +25,27 @@ public class Login {
 
 	public Login() {
 		super();
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}	
 	
 //	public Colaborador validarAcesso(ColaboradorService s) {
 //		return s.consultarPorEmaileSenha(this.usuario, this.senha);
 //	}
+	
+	
 }

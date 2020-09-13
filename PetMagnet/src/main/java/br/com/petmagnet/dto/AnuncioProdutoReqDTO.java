@@ -1,38 +1,67 @@
 package br.com.petmagnet.dto;
 
 import br.com.petmagnet.dto.interfac.RequestDTO;
-import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
-import br.com.petmagnet.model.Estabelecimento;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class AnuncioProdutoReqDTO implements RequestDTO{
-//	private Long idEstabelecimento;
-//	private Long idAnuncio;
+public class AnuncioProdutoReqDTO implements RequestDTO<AnuncioProduto> {
 	private Long id;
 	private String descricao;
 	private Double preco;
 	private String imagem;
 
+	public AnuncioProdutoReqDTO(Long id, String descricao, Double preco, String imagem) {
+		super();
+		this.setId(id);
+		this.setDescricao(descricao);
+		this.setPreco(preco);
+		this.setImagem(imagem);
+	}
+	
+	public AnuncioProdutoReqDTO() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
 	@Override
-	public Object toEntity() {
-		Estabelecimento estabelecimento = new Estabelecimento();
-		Anuncio anuncio = new Anuncio();
+	public AnuncioProduto toEntity() {
 		AnuncioProduto produto = new AnuncioProduto();
 		
-//		estabelecimento.setId(this.idEstabelecimento);
-//		
-//		anuncio.setId(this.idAnuncio);
-//		anuncio.setEstabelecimento(estabelecimento);
-//		
-//		produto.setAnuncio(anuncio);
 		produto.setDescricao(this.descricao);
 		produto.setPreco(this.preco);
 		produto.setImagem(this.imagem);
 		
 		return produto;
-	}	
+	}
+
 }

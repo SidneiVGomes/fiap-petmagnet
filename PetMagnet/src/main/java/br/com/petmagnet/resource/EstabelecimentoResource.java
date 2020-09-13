@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.petmagnet.dto.EstabelecimentoReqDTO;
 import br.com.petmagnet.dto.EstabelecimentoResDTO;
 import br.com.petmagnet.service.EstabelecimentoService;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("API/estabelecimentos")
 public class EstabelecimentoResource {

@@ -10,12 +10,8 @@ import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class AnuncioReqPutDTO implements RequestDTO{
+public class AnuncioReqPutDTO implements RequestDTO<Anuncio>{
 	@JsonIgnore
 	private Long idEstabelecimento;
 	@JsonIgnore
@@ -27,7 +23,7 @@ public class AnuncioReqPutDTO implements RequestDTO{
 	private List<AnuncioProdutoReqDTO> produtos;
 	
 	@Override
-	public Object toEntity() {
+	public Anuncio toEntity() {
 		Estabelecimento estabelecimento = new Estabelecimento();
 		estabelecimento.setId(this.idEstabelecimento);
 
@@ -61,11 +57,74 @@ public class AnuncioReqPutDTO implements RequestDTO{
 		return anuncio;
 	}
 	
-	public Object toEntity(Long idEstabelecimento, Long idColaborador, Long idAnuncio) {
+	public Anuncio toEntity(Long idEstabelecimento, Long idColaborador, Long idAnuncio) {
 		this.setIdEstabelecimento(idEstabelecimento);
 		this.setIdAnuncio(idAnuncio);
 		this.setIdColaborador(idColaborador);
 		
 		return this.toEntity();
+	}
+
+	public AnuncioReqPutDTO(Long idEstabelecimento, Long idColaborador, Long idAnuncio, String titulo, String descricao,
+			List<AnuncioProdutoReqDTO> produtos) {
+		super();
+		this.setIdEstabelecimento(idEstabelecimento);
+		this.setIdColaborador(idColaborador);
+		this.setIdAnuncio(idAnuncio);
+		this.setTitulo(titulo);
+		this.setDescricao(descricao);
+		this.setProdutos(produtos);
+	}
+
+	public AnuncioReqPutDTO() {
+		super();
+	}
+
+	public Long getIdEstabelecimento() {
+		return idEstabelecimento;
+	}
+
+	public void setIdEstabelecimento(Long idEstabelecimento) {
+		this.idEstabelecimento = idEstabelecimento;
+	}
+
+	public Long getIdColaborador() {
+		return idColaborador;
+	}
+
+	public void setIdColaborador(Long idColaborador) {
+		this.idColaborador = idColaborador;
+	}
+
+	public Long getIdAnuncio() {
+		return idAnuncio;
+	}
+
+	public void setIdAnuncio(Long idAnuncio) {
+		this.idAnuncio = idAnuncio;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public List<AnuncioProdutoReqDTO> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<AnuncioProdutoReqDTO> produtos) {
+		this.produtos = produtos;
 	}
 }

@@ -11,18 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.maps.errors.ApiException;
 
 import br.com.petmagnet.config.GeoLocationProperties;
-import br.com.petmagnet.exception.BeanNotFoundException;
+import br.com.petmagnet.exception.AppBeanNotFoundException;
 import br.com.petmagnet.model.Endereco;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.repository.EnderecoRepository;
 import br.com.petmagnet.repository.EstabelecimentoRepository;
 import br.com.petmagnet.service.EstabelecimentoService;
-import br.com.petmagnet.util.GeoLocalizacao;
-import br.com.petmagnet.util.Localizacao;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import br.com.petmagnet.util.AppLocalizacao;
+import br.com.petmagnet.util.AppLocalizacaoModel;
+import groovy.util.logging.Slf4j;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 @Transactional
@@ -52,7 +50,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 		estb.setEndereco(endereco);
 		
 		if (this.estabelecimentoRepository.findByCnpj(estb.getCnpj()).isPresent()) {
-			throw new BeanNotFoundException("Estabelecimento já está cadastrado");
+			throw new AppBeanNotFoundException("Estabelecimento já está cadastrado");
 		}
 				
 		return this.estabelecimentoRepository.save(estb);
@@ -64,7 +62,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 				.map(estabelecimento -> {
 					this.estabelecimentoRepository.deleteById(id);
 					return estabelecimento;
-				}).orElseThrow(() -> new BeanNotFoundException("Este estabelecimento não está cadastrado"));
+				}).orElseThrow(() -> new AppBeanNotFoundException("Este estabelecimento não está cadastrado"));
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 	@Override
 	public Estabelecimento consultarPorId(Long id) {
 		return this.estabelecimentoRepository.findById(id)
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não cadastrado"));
+				.orElseThrow(() -> new AppBeanNotFoundException("Estabelecimento não cadastrado"));
 	}
 
 	@Override
@@ -107,12 +105,12 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 					
 					return this.estabelecimentoRepository.save(estabalecimento);
 				})
-				.orElseThrow(() -> new BeanNotFoundException("Estabelecimento não cadastrado"));
+				.orElseThrow(() -> new AppBeanNotFoundException("Estabelecimento não cadastrado"));
 	}
 	
 	private Endereco gravarNovoEndereco(Endereco e) {
-		GeoLocalizacao gl = new GeoLocalizacao(geoLocationProperties.getApiKey());
-		Localizacao lcl = new Localizacao();
+		AppLocalizacao gl = new AppLocalizacao(geoLocationProperties.getApiKey());
+		AppLocalizacaoModel lcl = new AppLocalizacaoModel();
 		
 		try {
 			lcl = gl.getGeoLocalizacao(e.getCep());
