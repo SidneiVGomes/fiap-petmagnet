@@ -43,8 +43,8 @@ public class ColaboradorResource {
 	}
 		
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ColaboradorResDTO alterar(@PathVariable Long id, @RequestBody ColaboradorReqDTO novo) {
-		return new ColaboradorResDTO(this.colaboradorService.alterar(id, novo));
+	public ColaboradorResDTO alterar(@PathVariable Long id, @RequestBody ColaboradorReqDTO colaboradorReq) {
+		return new ColaboradorResDTO(this.colaboradorService.alterar(id, colaboradorReq.toEntity()));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

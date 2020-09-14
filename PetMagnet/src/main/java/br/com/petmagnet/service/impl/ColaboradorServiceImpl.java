@@ -3,12 +3,10 @@ package br.com.petmagnet.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.petmagnet.dto.ColaboradorReqDTO;
 import br.com.petmagnet.exception.AppBeanNotFoundException;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
@@ -34,16 +32,14 @@ public class ColaboradorServiceImpl implements ColaboradorService {
 			throw new AppBeanNotFoundException("Colaborador já cadastrado");
 		}
 		
-		Colaborador colaborador = new ModelMapper().map(obj, Colaborador.class);
+		obj.setEstabelecimento(estabelecimento);
+		obj.setId(null);
 
-		colaborador.setEstabelecimento(estabelecimento);
-		colaborador.setId(null);
-
-		return this.colaboradorRepository.save(colaborador);
+		return this.colaboradorRepository.save(obj);
 	}
 
 	@Override
-	public Colaborador alterar(Long Id, ColaboradorReqDTO obj) {
+	public Colaborador alterar(Long Id, Colaborador obj) {
 		return this.colaboradorRepository.findById(Id).map(colaborador -> {
 			colaborador.setSenha(obj.getSenha());
 

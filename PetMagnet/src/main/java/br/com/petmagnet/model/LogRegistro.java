@@ -28,12 +28,6 @@ public abstract class LogRegistro implements Serializable {
 	@JsonIgnore
 	private Instant dtUltimaAlteracao = Instant.now();
 
-	public LogRegistro(Instant dtCriacao, Instant dtUltimaAlteracao) {
-		super();
-		this.dtCriacao = dtCriacao;
-		this.dtUltimaAlteracao = dtUltimaAlteracao;
-	}
-
 	public LogRegistro() {
 		super();
 	}
@@ -52,9 +46,5 @@ public abstract class LogRegistro implements Serializable {
 
 	public void setDtUltimaAlteracao(Instant dtUltimaAlteracao) {
 		this.dtUltimaAlteracao = dtUltimaAlteracao;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }
