@@ -49,9 +49,16 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 		List<Anuncio> anuncios = new ArrayList<Anuncio>();
 		
 		obj.getAnuncios().stream().forEach(anuncio -> {
-			anuncios.add(this.anuncioService.consultarPorId(obj.getEstabelecimento().getId(), anuncio.getId()).get());
+			Anuncio a = this.anuncioService.consultarPorId(obj.getEstabelecimento().getId(), anuncio.getId()).get();
+
+			if (this.publicacaoRepository.findByEstabelecimentoAndAnunciosAndCancelado(estabelecimento, a, false) != null ) {
+				throw new AppBeanNotFoundException("O anúncio " + a.getId() + " já foi publicado");
+			};
+			
+			anuncios.add(a);
 		});
 
+		
 		Publicacao publicacao = this.publicacaoRepository.save(new Publicacao(null, obj.getDtPublicacao(),
 				obj.getDtEncerramento(), estabelecimento, colaborador, anuncios, Boolean.FALSE));
 
@@ -71,12 +78,12 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
 	@Override
 	public List<Publicacao> consultarTodos(Long idEstabelecimento, Boolean exibirEncerrados) {
-		List<Publicacao> publicacoes = new ArrayList<Publicacao>();
-		
+		List<Publicacao> publicacoes = new ArrayList<Publicacao>() ;
+	
 		this.publicacaoRepository.findAll().stream()
 			.forEach(publicacao -> {
 
-				if (!publicacao.getCancelado()) {
+				if (publicacao.getCancelado()) {
 					// Não exibe o anúncio
 					
 				} else if (!exibirEncerrados) {
@@ -144,8 +151,8 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 	public Boolean pubicacaoEncerrada(Publicacao publicacao) {
 		Instant dtPublicacao = publicacao.getDtPublicacao().toInstant();
 		Instant dtEncerramento = publicacao.getDtEncerramento().toInstant();
-		
-		if (dtPublicacao.compareTo(Instant.now()) <= 0 && Instant.now().compareTo(dtEncerramento) > 0 ) {
+
+		if (dtPublicacao.compareTo(Instant.now()) <= 0 && Instant.now().compareTo(dtEncerramento) <= 0 ) {
 			return false;
 		} else {
 			return true;

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.model.Publicacao;
 
@@ -20,4 +21,6 @@ public interface PublicacaoRepository extends JpaRepository<Publicacao, Long> {
 				   "and p.dtEncerramento >= :dtA " +
 	               "and cancelado = false")
 	public List<Publicacao> findByPublicacoesAtivas(@Param("dtA") Date dtAtual);
+	
+	public Publicacao findByEstabelecimentoAndAnunciosAndCancelado(Estabelecimento estabelecimento, Anuncio anuncio, Boolean cancelado);
 }
