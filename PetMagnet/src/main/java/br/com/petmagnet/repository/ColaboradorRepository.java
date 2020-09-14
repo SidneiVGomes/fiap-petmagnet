@@ -10,7 +10,7 @@ import br.com.petmagnet.model.Estabelecimento;
 
 @Repository
 public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> {
-	Optional<Colaborador> findByNomeAndSenha(String nome, String senhas);
+	Optional<Colaborador> findByNomeAndSenha(String nome, String senha);
 	Optional<Colaborador> findByNomeAndSenhaAndEstabelecimento(String nome, String senha, Estabelecimento estabelecimento);
 	Optional<Colaborador> findByEstabelecimentoAndId(Estabelecimento estabelecimento, Long id);
 }
