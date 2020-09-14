@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.petmagnet.exception.AppBeanNotFoundException;
+import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.model.Publicacao;
@@ -45,12 +46,14 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 		Colaborador colaborador = this.colaboradorService
 				.consultarPorColaborador(estabelecimento, obj.getColaborador().getId()).get();
 
+		List<Anuncio> anuncios = new ArrayList<Anuncio>();
+		
 		obj.getAnuncios().stream().forEach(anuncio -> {
-			this.anuncioService.consultarPorId(obj.getEstabelecimento().getId(), anuncio.getId());
+			anuncios.add(this.anuncioService.consultarPorId(obj.getEstabelecimento().getId(), anuncio.getId()).get());
 		});
 
 		Publicacao publicacao = this.publicacaoRepository.save(new Publicacao(null, obj.getDtPublicacao(),
-				obj.getDtEncerramento(), estabelecimento, colaborador, obj.getAnuncios(), Boolean.FALSE));
+				obj.getDtEncerramento(), estabelecimento, colaborador, anuncios, Boolean.FALSE));
 
 		return publicacao;
 	}

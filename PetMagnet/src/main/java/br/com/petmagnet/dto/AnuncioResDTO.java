@@ -12,8 +12,8 @@ public class AnuncioResDTO {
 	@JsonIgnore
 	private String accessKey;
 	private Long idAnuncio;
-//	private Long idEstabelecimento;
-//	private Long idColaborador;
+	private Long idEstabelecimento;
+	private Long idColaborador;
 	private String titulo;
 	private String descricao;
 	private List<AnuncioProdutoResDTO> produtos;
@@ -22,8 +22,8 @@ public class AnuncioResDTO {
 	private List<Anuncio> anuncios;
 	
 	public AnuncioResDTO(Anuncio obj) {
-//		this.setIdEstabelecimento(obj.getEstabelecimento().getId());
-//		this.setIdColaborador(obj.getColaborador().getId());
+		this.setIdEstabelecimento(obj.getEstabelecimento().getId());
+		this.setIdColaborador(obj.getColaborador().getId());
 		this.setIdAnuncio(obj.getId());
 		this.setTitulo(obj.getTitulo());
 		this.setDescricao(obj.getDescricao());
@@ -36,16 +36,15 @@ public class AnuncioResDTO {
 	}
 
 	public AnuncioResDTO(String accessKey, Long idAnuncio, Long idEstabelecimento, Long idColaborador, String titulo,
-			String descricao, List<AnuncioProduto> produtos, List<Anuncio> anuncios) {
+			String descricao, List<AnuncioProduto> produtos) {
 		super();
-		this.accessKey = accessKey;
-		this.idAnuncio = idAnuncio;
-//		this.idEstabelecimento = idEstabelecimento;
-//		this.idColaborador = idColaborador;
-		this.titulo = titulo;
-		this.descricao = descricao;
-		this.produtos = new AnuncioProdutoResDTO(produtos).toList();
-		this.anuncios = anuncios;
+		this.setAccessKey(accessKey);
+		this.setIdAnuncio(idAnuncio);
+		this.setIdEstabelecimento(idEstabelecimento);
+		this.setIdColaborador(idColaborador);
+		this.setTitulo(titulo);
+		this.setDescricao(descricao);
+		this.setProdutos(new AnuncioProdutoResDTO(produtos).toList()); 
 	}	
 	
 	public List<AnuncioResDTO> toList() {
@@ -108,5 +107,21 @@ public class AnuncioResDTO {
 
 	public void setAnuncios(List<Anuncio> anuncios) {
 		this.anuncios = anuncios;
+	}
+
+	public Long getIdEstabelecimento() {
+		return idEstabelecimento;
+	}
+
+	public void setIdEstabelecimento(Long idEstabelecimento) {
+		this.idEstabelecimento = idEstabelecimento;
+	}
+
+	public Long getIdColaborador() {
+		return idColaborador;
+	}
+
+	public void setIdColaborador(Long idColaborador) {
+		this.idColaborador = idColaborador;
 	}
 }
