@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.petmagnet.dto.AnuncioReqDTO;
+import br.com.petmagnet.dto.AnuncioReqPublicacaoDTO;
 import br.com.petmagnet.dto.AnuncioReqPutDTO;
 import br.com.petmagnet.dto.AnuncioResDTO;
+import br.com.petmagnet.dto.AnuncioResPublicacaoDTO;
 import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.service.AnuncioService;
 
@@ -29,6 +31,13 @@ public class AnuncioResource {
 	@RequestMapping(method = RequestMethod.POST)
 	public AnuncioResDTO cadastrar(@RequestBody AnuncioReqDTO anuncioDTO) {
 		return new AnuncioResDTO(this.anuncioService.gravar(anuncioDTO.toEntity()));
+	}
+
+	@ResponseStatus(HttpStatus.CREATED)
+	@RequestMapping(value = "/publicar", method = RequestMethod.POST)
+	public AnuncioResPublicacaoDTO publicarDireto(@RequestBody AnuncioReqPublicacaoDTO anuncioDTO) {
+		return new AnuncioResPublicacaoDTO(this.anuncioService.publicarDireto(anuncioDTO.toEntity(), anuncioDTO.getDtPublicacao(),
+				anuncioDTO.getDtEncerramento()));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -53,8 +62,8 @@ public class AnuncioResource {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<AnuncioResDTO> consultarAnunciosPorColaborador() {
 		return new AnuncioResDTO(this.anuncioService.consultarTodos()).toList();
-	}	
-		
+	}
+
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/{idAnuncio}", method = RequestMethod.DELETE)
 	public AnuncioResDTO excluir(@PathVariable Long idAnuncio, @RequestParam Long idEstabelecimento,

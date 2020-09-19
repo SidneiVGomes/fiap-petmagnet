@@ -10,6 +10,7 @@ import br.com.petmagnet.model.Publicacao;
 @Service
 public interface PublicacaoService {
 	public Publicacao publicar(Publicacao obj);
+	public Publicacao publicarSimples(Publicacao obj);
 	public Publicacao alterar(Long id, Publicacao obj);
 	public Publicacao excluir(Long idEstabelecimento, Long idPublicacao);
 	public Publicacao cancelar(Long idEstabelecimento, Long idPublicacao);
