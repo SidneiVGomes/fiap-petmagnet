@@ -47,18 +47,19 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 				.consultarPorColaborador(estabelecimento, obj.getColaborador().getId()).get();
 
 		List<Anuncio> anuncios = new ArrayList<Anuncio>();
-		
+
 		obj.getAnuncios().stream().forEach(anuncio -> {
 			Anuncio a = this.anuncioService.consultarPorId(obj.getEstabelecimento().getId(), anuncio.getId()).get();
 
-			if (this.publicacaoRepository.findByEstabelecimentoAndAnunciosAndCancelado(estabelecimento, a, false) != null ) {
+			if (this.publicacaoRepository.findByEstabelecimentoAndAnunciosAndCancelado(estabelecimento, a,
+					false) != null) {
 				throw new AppBeanNotFoundException("O anúncio " + a.getId() + " já foi publicado");
-			};
-			
+			}
+			;
+
 			anuncios.add(a);
 		});
 
-		
 		Publicacao publicacao = this.publicacaoRepository.save(new Publicacao(null, obj.getDtPublicacao(),
 				obj.getDtEncerramento(), estabelecimento, colaborador, anuncios, Boolean.FALSE));
 
@@ -78,30 +79,29 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
 	@Override
 	public List<Publicacao> consultarTodos(Long idEstabelecimento, Boolean exibirEncerrados) {
-		List<Publicacao> publicacoes = new ArrayList<Publicacao>() ;
-	
-		this.publicacaoRepository.findAll().stream()
-			.forEach(publicacao -> {
+		List<Publicacao> publicacoes = new ArrayList<Publicacao>();
 
-				if (publicacao.getCancelado()) {
-					// Não exibe o anúncio
-					
-				} else if (!exibirEncerrados) {
-					// Exibe somente os anúncios publicados que não foram encerrados ou os que ainda
-					// não foram publicados.
-					if ( !this.pubicacaoEncerrada(publicacao) ) {
-						publicacoes.add(publicacao);
-					}
-										
-				} else if (exibirEncerrados) {
-					// Exibr somente os anúncios que já foram publicados e que já foram encerrados.
-					if ( this.pubicacaoEncerrada(publicacao) ) {
-						publicacoes.add(publicacao);
-					}
-					
+		this.publicacaoRepository.findAll().stream().forEach(publicacao -> {
+
+			if (publicacao.getCancelado()) {
+				// Não exibe o anúncio
+
+			} else if (!exibirEncerrados) {
+				// Exibe somente os anúncios publicados que não foram encerrados ou os que ainda
+				// não foram publicados.
+				if (!this.pubicacaoEncerrada(publicacao)) {
+					publicacoes.add(publicacao);
 				}
-			}); 
-		
+
+			} else if (exibirEncerrados) {
+				// Exibr somente os anúncios que já foram publicados e que já foram encerrados.
+				if (this.pubicacaoEncerrada(publicacao)) {
+					publicacoes.add(publicacao);
+				}
+
+			}
+		});
+
 		return publicacoes;
 	}
 
@@ -110,8 +110,8 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
 
 		Publicacao publicacao = this.publicacaoRepository.findByEstabelecimentoAndId(estabelecimento, idPublicacao)
-				.orElseThrow(() -> new AppBeanNotFoundException("Publicação não Cadastrada"));		
-		
+				.orElseThrow(() -> new AppBeanNotFoundException("Publicação não Cadastrada"));
+
 		return Optional.ofNullable(publicacao);
 	}
 
@@ -123,9 +123,10 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 	@Override
 	public Publicacao cancelar(Long idEstabelecimento, Long idPublicacao) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
-		
-		Publicacao publicacao = this.publicacaoRepository.findByEstabelecimentoAndId(estabelecimento, idPublicacao).get();
-		
+
+		Publicacao publicacao = this.publicacaoRepository.findByEstabelecimentoAndId(estabelecimento, idPublicacao)
+				.get();
+
 		publicacao.setCancelado(Boolean.TRUE);
 
 		return this.publicacaoRepository.save(publicacao);
@@ -147,15 +148,30 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
 		return publicacoes;
 	}
-	
+
 	public Boolean pubicacaoEncerrada(Publicacao publicacao) {
 		Instant dtPublicacao = publicacao.getDtPublicacao().toInstant();
 		Instant dtEncerramento = publicacao.getDtEncerramento().toInstant();
 
-		if (dtPublicacao.compareTo(Instant.now()) <= 0 && Instant.now().compareTo(dtEncerramento) <= 0 ) {
+		if (dtPublicacao.compareTo(Instant.now()) <= 0 && Instant.now().compareTo(dtEncerramento) <= 0) {
 			return false;
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public Publicacao publicarSimples(Publicacao obj) {
+		obj.getAnuncios().stream().forEach(anuncio -> {
+			Anuncio a = this.anuncioService.consultarPorId(obj.getEstabelecimento().getId(), anuncio.getId()).get();
+
+			if (this.publicacaoRepository.findByEstabelecimentoAndAnunciosAndCancelado(obj.getEstabelecimento(), a,
+					false) != null) {
+				throw new AppBeanNotFoundException("O anúncio " + a.getId() + " já foi publicado");
+			}
+			;
+		});
+
+		return this.publicacaoRepository.save(obj);
 	}
 }

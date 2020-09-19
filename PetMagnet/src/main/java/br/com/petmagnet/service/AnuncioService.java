@@ -1,8 +1,9 @@
 package br.com.petmagnet.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
- 
+
 import org.springframework.stereotype.Service;
 
 import br.com.petmagnet.model.Anuncio;
@@ -16,4 +17,5 @@ public interface AnuncioService {
 	public List<Anuncio> consultarTodos();
 	public List<Anuncio> consultarPorColaborador(Long idEstabelecimento, Long idColaborador, Boolean publicado);
 	public List<Anuncio> consultarPorEstabelecimento(Long idEstabelecimento, Boolean publicado);
+	public Anuncio publicarDireto(Anuncio obj, Date dtPublicacao, Date dtEncerramento);
 }

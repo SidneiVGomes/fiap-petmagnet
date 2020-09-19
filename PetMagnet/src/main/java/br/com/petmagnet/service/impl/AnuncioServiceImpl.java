@@ -1,6 +1,7 @@
 package br.com.petmagnet.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.AnuncioProduto;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
+import br.com.petmagnet.model.Publicacao;
 import br.com.petmagnet.repository.AnuncioRepository;
 import br.com.petmagnet.service.AnuncioService;
 import groovy.util.logging.Slf4j;
@@ -32,6 +34,9 @@ public class AnuncioServiceImpl implements AnuncioService {
 
 	@Autowired
 	private ColaboradorServiceImpl colaboradorService;
+	
+	@Autowired
+	private PublicacaoServiceImpl publicacaoService;
 
 	@Override
 	public Anuncio gravar(Anuncio obj) {
@@ -163,5 +168,42 @@ public class AnuncioServiceImpl implements AnuncioService {
 		}
 
 		return anunciosNaoPaublicados;
+	}
+
+	@Override
+	public Anuncio publicarDireto(Anuncio obj, Date dtPublicacao, Date dtEncerramento) {
+		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getEstabelecimento().getId());
+
+		Colaborador colaborador = this.colaboradorService
+				.consultarPorColaborador(estabelecimento, obj.getColaborador().getId()).get();
+
+		Anuncio anuncio = this.anuncioRepository
+				.save(new Anuncio(null, obj.getTitulo(), obj.getDescricao(), null, estabelecimento, colaborador, null));
+
+		List<AnuncioProduto> produtos = new ArrayList<AnuncioProduto>();
+
+		for (AnuncioProduto produto : obj.getProdutos()) {
+			produto.setAnuncio(anuncio);
+
+			produtos.add(anuncioProdutoService.gravar(produto));
+		}
+
+		anuncio.setProdutos(produtos);
+		
+		// Realiza a PUBLICAÇÃO do anuncio.
+		List<Anuncio> anuncios = new ArrayList<Anuncio>();
+		
+		anuncios.add(anuncio);
+		
+		Publicacao publicacao = new Publicacao(null, dtPublicacao, dtEncerramento, estabelecimento, colaborador, anuncios, Boolean.FALSE);
+		
+		publicacaoService.publicarSimples(publicacao);
+		
+		List<Publicacao> publicacoes = new ArrayList<Publicacao>();
+		publicacoes.add(publicacao);
+		
+		anuncio.setPublicacoes(publicacoes);
+		
+		return anuncio;
 	}
 }

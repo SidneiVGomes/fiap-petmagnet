@@ -1,5 +1,7 @@
 package br.com.petmagnet.model;
 
+import java.sql.Blob;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,6 +35,11 @@ public class AnuncioProduto extends LogRegistro{
 //	@NotEmpty	
 //	private Blob imagem;
 	private String imagem;
+
+	@Column(name = "ds_imagem_base64")
+//	@NotEmpty	
+//	private Blob imagem;
+	private Blob imagem_base64;
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_anuncio")
