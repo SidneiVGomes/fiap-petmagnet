@@ -1,5 +1,6 @@
 package br.com.petmagnet.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.petmagnet.exception.AppBeanNotFoundException;
 import br.com.petmagnet.model.Anuncio;
@@ -17,6 +19,7 @@ import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.model.Publicacao;
 import br.com.petmagnet.repository.AnuncioRepository;
 import br.com.petmagnet.service.AnuncioService;
+import br.com.petmagnet.util.AppImageCompress;
 import groovy.util.logging.Slf4j;
 
 @Slf4j
@@ -34,7 +37,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 
 	@Autowired
 	private ColaboradorServiceImpl colaboradorService;
-	
+
 	@Autowired
 	private PublicacaoServiceImpl publicacaoService;
 
@@ -115,7 +118,7 @@ public class AnuncioServiceImpl implements AnuncioService {
 				if (produtoAtual.getId().equals(produtoAlterado.getId())) {
 					produtoAtual.setDescricao(produtoAlterado.getDescricao());
 					produtoAtual.setPreco(produtoAlterado.getPreco());
-					produtoAtual.setImagem(produtoAlterado.getImagem());
+					produtoAtual.setImagem_byte(produtoAlterado.getImagem_byte());
 
 					produtosAlterados.add(produtoAtual);
 				}
@@ -189,21 +192,42 @@ public class AnuncioServiceImpl implements AnuncioService {
 		}
 
 		anuncio.setProdutos(produtos);
-		
+
 		// Realiza a PUBLICAÇÃO do anuncio.
 		List<Anuncio> anuncios = new ArrayList<Anuncio>();
-		
+
 		anuncios.add(anuncio);
-		
-		Publicacao publicacao = new Publicacao(null, dtPublicacao, dtEncerramento, estabelecimento, colaborador, anuncios, Boolean.FALSE);
-		
+
+		Publicacao publicacao = new Publicacao(null, dtPublicacao, dtEncerramento, estabelecimento, colaborador,
+				anuncios, Boolean.FALSE);
+
 		publicacaoService.publicarSimples(publicacao);
-		
+
 		List<Publicacao> publicacoes = new ArrayList<Publicacao>();
 		publicacoes.add(publicacao);
-		
+
 		anuncio.setPublicacoes(publicacoes);
-		
+
 		return anuncio;
+	}
+
+	public Boolean publicarImagem(Long idEstabelecimento, Long idAnuncio, Long idProduto, MultipartFile file) {
+//		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(idEstabelecimento);
+
+//		Anuncio anuncio = this.anuncioRepository.findByEstabelecimentoAndId(estabelecimento, idAnuncio)
+//				.orElseThrow(() -> new AppBeanNotFoundException("Anúncio não Cadastrado"));
+		
+		AnuncioProduto produto = this.anuncioProdutoService.consultarPorId(idAnuncio, idEstabelecimento, idProduto);
+		
+		try {
+			produto.setImagem_byte(AppImageCompress.compressBytes(file.getBytes()));
+
+		} catch (IOException e) {
+			throw new AppBeanNotFoundException("Erro ao gravar a imagem");
+		}
+		
+		this.anuncioProdutoService.alterar(idEstabelecimento, idAnuncio, idProduto, produto);
+		
+		return Boolean.TRUE;
 	}
 }

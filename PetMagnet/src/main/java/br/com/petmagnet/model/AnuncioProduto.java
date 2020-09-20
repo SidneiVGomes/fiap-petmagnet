@@ -1,7 +1,5 @@
 package br.com.petmagnet.model;
 
-import java.sql.Blob;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,26 +29,30 @@ public class AnuncioProduto extends LogRegistro{
 	@Min(1)	
 	private Double preco;
 
-	@Column(name = "ds_imagem")
-//	@NotEmpty	
-//	private Blob imagem;
-	private String imagem;
+//	@Column(name = "ds_imagem")
+////	@NotEmpty	
+////	private Blob imagem;
+//	private String imagem;
 
-	@Column(name = "ds_imagem_base64")
-//	@NotEmpty	
-//	private Blob imagem;
-	private Blob imagem_base64;
+//	@Column(name = "ds_imagem_base64")
+////	@NotEmpty	
+////	private Blob imagem;
+//	private Blob imagem_base64;
+	
+	@Column(name= "ds_imagem_byte", length = 2000)
+	private byte[] imagem_byte;
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_anuncio")
 	private Anuncio anuncio;
 
-	public AnuncioProduto(Long id, @NotEmpty String descricao, @Min(1) Double preco, String imagem, Anuncio anuncio) {
+	public AnuncioProduto(Long id, @NotEmpty String descricao, @Min(1) Double preco, byte[] imagem_byte,
+			Anuncio anuncio) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.preco = preco;
-		this.imagem = imagem;
+		this.imagem_byte = imagem_byte;
 		this.anuncio = anuncio;
 	}
 
@@ -82,19 +84,19 @@ public class AnuncioProduto extends LogRegistro{
 		this.preco = preco;
 	}
 
-	public String getImagem() {
-		return imagem;
-	}
-
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
-	}
-
 	public Anuncio getAnuncio() {
 		return anuncio;
 	}
 
 	public void setAnuncio(Anuncio anuncio) {
 		this.anuncio = anuncio;
+	}
+
+	public byte[] getImagem_byte() {
+		return imagem_byte;
+	}
+
+	public void setImagem_byte(byte[] imagem_byte) {
+		this.imagem_byte = imagem_byte;
 	}	
 }

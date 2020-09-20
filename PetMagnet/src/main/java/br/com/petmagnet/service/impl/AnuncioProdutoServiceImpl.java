@@ -30,7 +30,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 				obj.getAnuncio().getId()
 			).get();
 
-		AnuncioProduto produto = new AnuncioProduto(null, obj.getDescricao(), obj.getPreco(), obj.getImagem(), anuncio);
+		AnuncioProduto produto = new AnuncioProduto(null, obj.getDescricao(), obj.getPreco(), obj.getImagem_byte(), anuncio);
 		
 		return this.anuncioProdutoRepository.save(produto);	
 	}
@@ -63,7 +63,7 @@ public class AnuncioProdutoServiceImpl implements AnuncioProdutoService {
 			if (produto.getId().equals(idProduto)) {
 
 				produto.setDescricao(obj.getDescricao());
-				produto.setImagem(obj.getImagem());
+				produto.setImagem_byte(obj.getImagem_byte());
 				produto.setPreco(obj.getPreco());
 				
 				return this.anuncioProdutoRepository.save(produto);

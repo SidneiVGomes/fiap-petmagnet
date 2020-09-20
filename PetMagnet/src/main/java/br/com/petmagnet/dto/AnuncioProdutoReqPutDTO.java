@@ -16,7 +16,7 @@ public class AnuncioProdutoReqPutDTO implements RequestDTO<AnuncioProduto> {
 	private Long idProduto;
 	private String descricao;
 	private Double preco;
-	private String imagem;
+	private byte[] imagem_byte;
 
 	@Override
 	public AnuncioProduto toEntity() {
@@ -32,7 +32,7 @@ public class AnuncioProdutoReqPutDTO implements RequestDTO<AnuncioProduto> {
 		produto.setAnuncio(anuncio);
 		produto.setDescricao(this.descricao);
 		produto.setPreco(this.preco);
-		produto.setImagem(this.imagem);
+		produto.setImagem_byte(this.imagem_byte);
 		
 		return produto;
 	}	
@@ -46,14 +46,14 @@ public class AnuncioProdutoReqPutDTO implements RequestDTO<AnuncioProduto> {
 	}
 
 	public AnuncioProdutoReqPutDTO(Long idEstabelecimento, Long idAnuncio, Long idProduto, String descricao,
-			Double preco, String imagem) {
+			Double preco, byte[] imagem_byte) {
 		super();
-		this.setIdEstabelecimento(idEstabelecimento);
-		this.setIdAnuncio(idAnuncio);
-		this.setIdProduto(idProduto);
-		this.setDescricao(descricao);
-		this.setPreco(preco);
-		this.setImagem(imagem);
+		this.idEstabelecimento = idEstabelecimento;
+		this.idAnuncio = idAnuncio;
+		this.idProduto = idProduto;
+		this.descricao = descricao;
+		this.preco = preco;
+		this.imagem_byte = imagem_byte;
 	}
 
 	public AnuncioProdutoReqPutDTO() {
@@ -100,11 +100,11 @@ public class AnuncioProdutoReqPutDTO implements RequestDTO<AnuncioProduto> {
 		this.preco = preco;
 	}
 
-	public String getImagem() {
-		return imagem;
+	public byte[] getImagem_byte() {
+		return imagem_byte;
 	}
 
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
-	}	
+	public void setImagem_byte(byte[] imagem_byte) {
+		this.imagem_byte = imagem_byte;
+	}
 }

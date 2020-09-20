@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.petmagnet.model.Endereco;
 import br.com.petmagnet.model.Estabelecimento;
  
 public class EstabelecimentoResDTO {
@@ -14,6 +13,8 @@ public class EstabelecimentoResDTO {
 	private String nome;
 	private String complEndereco;
 	private EnderecoResDTO endereco;
+	@JsonIgnore
+	private byte[] logo;
 	
 	@JsonIgnore
 	private List<Estabelecimento> estabelecimentos;
@@ -24,21 +25,24 @@ public class EstabelecimentoResDTO {
 		this.setNome(estabelecimento.getNome());
 		this.setComplEndereco(estabelecimento.getComplEndereco());
 		this.setEndereco(new EnderecoResDTO(estabelecimento.getEndereco()));
+		this.setLogo(estabelecimento.getLogo());
 	}
 
 	public EstabelecimentoResDTO(List<Estabelecimento> estabelecimentos) {
 		this.estabelecimentos = estabelecimentos;
 	}
 		
-	public EstabelecimentoResDTO(Long idEstabelecimento, String cnpj, String nome, String complEndereco, Endereco endereco) {
+	public EstabelecimentoResDTO(Long idEstabelecimento, String cnpj, String nome, String complEndereco,
+			EnderecoResDTO endereco, byte[] logo) {
 		super();
-		this.setIdEstabelecimento(idEstabelecimento);
-		this.setCnpj(cnpj);
-		this.setNome(nome);
-		this.setComplEndereco(complEndereco);
-		this.setEndereco(new EnderecoResDTO(endereco));
+		IdEstabelecimento = idEstabelecimento;
+		this.cnpj = cnpj;
+		this.nome = nome;
+		this.complEndereco = complEndereco;
+		this.endereco = endereco;
+		this.logo = logo;
 	}
-	
+
 	public List<EstabelecimentoResDTO> toList () {
 		List<EstabelecimentoResDTO> listDTO = new ArrayList<EstabelecimentoResDTO>();
 		
@@ -87,5 +91,13 @@ public class EstabelecimentoResDTO {
 
 	public void setEndereco(EnderecoResDTO endereco) {
 		this.endereco = endereco;
+	}
+
+	public byte[] getLogo() {
+		return logo;
+	}
+
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
 	}
 }

@@ -6,12 +6,13 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.petmagnet.model.AnuncioProduto;
+import br.com.petmagnet.util.AppImageCompress;
 
 public class AnuncioProdutoResDTO {
 	private Long idProduto;
 	private String descricao;
 	private Double preco;
-	private String imagem;
+	private byte[] imagem_byte;
 	
 	@JsonIgnore
 	private List<AnuncioProduto> produtos;
@@ -19,20 +20,29 @@ public class AnuncioProdutoResDTO {
 	public AnuncioProdutoResDTO(AnuncioProduto obj) {
 		this.setIdProduto(obj.getId());
 		this.setDescricao(obj.getDescricao());
-		this.setImagem(obj.getImagem());
 		this.setPreco(obj.getPreco());
+		
+		try {
+			this.setImagem_byte(AppImageCompress.decompressBytes(obj.getImagem_byte()));
+			
+		} catch (Exception e) { }
 	}
 
 	public AnuncioProdutoResDTO(List<AnuncioProduto> obj) {
 		this.setProdutos(obj);
 	}
 
-	public AnuncioProdutoResDTO(Long idProduto, Long idAnuncio, String descricao, Double preco, String imagem) {
+	public AnuncioProdutoResDTO(Long idProduto, String descricao, Double preco, String imagem, byte[] imagem_byte,
+			List<AnuncioProduto> produtos) {
 		super();
-		this.setIdProduto(idProduto);
-		this.setDescricao(descricao);
-		this.setPreco(preco);
-		this.setImagem(imagem);
+		this.idProduto = idProduto;
+		this.descricao = descricao;
+		this.preco = preco;
+		this.produtos = produtos;
+		
+		try {
+			this.imagem_byte = AppImageCompress.decompressBytes(imagem_byte);
+		} catch (Exception e) { }
 	}
 
 	public List<AnuncioProdutoResDTO> toList() {
@@ -61,14 +71,6 @@ public class AnuncioProdutoResDTO {
 		this.preco = preco;
 	}
 
-	public String getImagem() {
-		return imagem;
-	}
-
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
-	}
-
 	public List<AnuncioProduto> getProdutos() {
 		return produtos;
 	}
@@ -83,5 +85,13 @@ public class AnuncioProdutoResDTO {
 
 	public void setIdProduto(Long idProduto) {
 		this.idProduto = idProduto;
-	}	
+	}
+
+	public byte[] getImagem_byte() {
+		return imagem_byte;
+	}
+
+	public void setImagem_byte(byte[] imagem_byte) {
+		this.imagem_byte = imagem_byte;
+	}
 }

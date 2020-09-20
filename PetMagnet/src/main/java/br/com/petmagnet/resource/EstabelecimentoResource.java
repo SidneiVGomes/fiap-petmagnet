@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.petmagnet.dto.EstabelecimentoReqDTO;
 import br.com.petmagnet.dto.EstabelecimentoResDTO;
-import br.com.petmagnet.service.EstabelecimentoService;
+import br.com.petmagnet.service.impl.EstabelecimentoServiceImpl;
 
 @RestController
 @RequestMapping("API/estabelecimentos")
 public class EstabelecimentoResource {
 	@Autowired
-	EstabelecimentoService estabelecimentoService;
+	EstabelecimentoServiceImpl estabelecimentoService;
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
@@ -44,6 +44,12 @@ public class EstabelecimentoResource {
     	return new EstabelecimentoResDTO(this.estabelecimentoService.alterar(id, estabelecimentoReqDTO.toEntity()));
 	}	
 
+//	@ResponseStatus(HttpStatus.ACCEPTED)
+//	@RequestMapping(value = "/logotipo", method = RequestMethod.PUT, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+//	public Boolean registrarLogotipo(@RequestParam Long idEstabelecimento, @RequestPart("imageFile") final MultipartFile file) {
+//		return this.estabelecimentoService.registrarLogo(idEstabelecimento, file);
+//	}		
+    
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)	
 	public EstabelecimentoResDTO excluir(@PathVariable Long id) {
     	return new EstabelecimentoResDTO(this.estabelecimentoService.excluir(id));
