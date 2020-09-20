@@ -43,15 +43,19 @@ public class Estabelecimento extends LogRegistro {
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private Endereco endereco;
 
+	@Column(name= "ds_logo", length = 2000)
+	private byte[] logo;	
+	
 	public Estabelecimento(Long id, @CNPJ @NotEmpty String cnpj,
 			@NotEmpty @Length(min = 5, max = 60, message = "O nome deve ter entre {min} a {max} caracteres") String nome,
-			String complEndereco, Endereco endereco) {
+			String complEndereco, Endereco endereco, byte[] logo) {
 		super();
 		this.id = id;
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.complEndereco = complEndereco;
 		this.endereco = endereco;
+		this.logo = logo;
 	}
 
 	public Estabelecimento() {
@@ -96,5 +100,13 @@ public class Estabelecimento extends LogRegistro {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public byte[] getLogo() {
+		return logo;
+	}
+
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
 	}
 }

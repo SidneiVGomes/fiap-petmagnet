@@ -47,7 +47,7 @@ public class AnuncioReqPutDTO implements RequestDTO<Anuncio>{
 			anuncioProduto.setAnuncio(anuncio);
 			anuncioProduto.setDescricao(produtoDTO.getDescricao());
 			anuncioProduto.setPreco(produtoDTO.getPreco());
-			anuncioProduto.setImagem(produtoDTO.getImagem());
+			anuncioProduto.setImagem_byte(produtoDTO.getImagem_byte());
 			
 			anuncioProdutos.add(anuncioProduto);
 		}
