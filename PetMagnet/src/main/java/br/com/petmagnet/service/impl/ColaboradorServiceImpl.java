@@ -20,6 +20,7 @@ import groovy.util.logging.Slf4j;
 public class ColaboradorServiceImpl implements ColaboradorService {
 	@Autowired
 	private ColaboradorRepository colaboradorRepository;
+	
 	@Autowired
 	private EstabelecimentoServiceImpl estabelecimentoService;
 
@@ -31,7 +32,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
 				.findByNomeAndSenhaAndEstabelecimento(obj.getNome(), obj.getSenha(), estabelecimento).isPresent()) {
 			throw new AppBeanNotFoundException("Colaborador já cadastrado");
 		}
-		
+
 		obj.setEstabelecimento(estabelecimento);
 		obj.setId(null);
 

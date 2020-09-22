@@ -1,19 +1,32 @@
 package br.com.petmagnet.util;
 
 public class AppLocalizacaoModel {
-	String longitude;
-	String latitude;
+	Double longitude;
+	Double latitude;
 	
-	public String getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
-	public void setLongitude(String longitude) {
-		this.longitude = longitude.replaceFirst("\\.", ",");
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
 	}
-	public String getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
-	public void setLatitude(String latitude) {
-		this.latitude = latitude.replaceFirst("\\.", ",");
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
+	
+//	public String getLongitude() {
+//		return longitude;
+//	}
+//	public void setLongitude(String longitude) {
+//		this.longitude = longitude.replaceFirst("\\.", ",");
+//	}
+//	public String getLatitude() {
+//		return latitude;
+//	}
+//	public void setLatitude(String latitude) {
+//		this.latitude = latitude.replaceFirst("\\.", ",");
+//	}
 }

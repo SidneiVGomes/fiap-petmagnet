@@ -46,9 +46,12 @@ public class AppLocalizacao {
 		JSONObject location = (JSONObject) jsonObject3.get("location");
 
 		// Obtém os valores desejados.
-		loc.setLatitude(location.get("lat").toString());
-		loc.setLongitude(location.get("lng").toString());
+//		loc.setLatitude(location.get("lat").toString());
+//		loc.setLongitude(location.get("lng").toString());
 
+		loc.setLatitude(Double.parseDouble(location.get("lat").toString()));
+		loc.setLongitude(Double.parseDouble(location.get("lng").toString()));
+		
 		return loc;
 	}
 }

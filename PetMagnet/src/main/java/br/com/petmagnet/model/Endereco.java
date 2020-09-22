@@ -39,13 +39,16 @@ public class Endereco extends LogRegistro {
 	private String cep;
 	
 	@Column(name = "nr_latitude")
-	private String latitude;
+	private Double latitude;
 	
 	@Column(name = "nr_longitude")
-	private String longitude;
+	private Double longitude;
+	
+	@Column(name = "tp_endereco", length = 1)
+	private Integer tipoEndereco;
 
 	public Endereco(Long id, String logradouro, String numero, String bairro, String cidade, String uF, String pais,
-			String cep, String latitude, String longitude) {
+			String cep, Double latitude, Double longitude, Integer tipoEndereco) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
@@ -57,6 +60,7 @@ public class Endereco extends LogRegistro {
 		this.cep = cep;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.tipoEndereco = tipoEndereco;
 	}
 
 	public Endereco() {
@@ -127,24 +131,30 @@ public class Endereco extends LogRegistro {
 		this.cep = cep;
 	}
 
-	public String getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public String getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	
+
+	public Integer getTipoEndereco() {
+		return tipoEndereco;
+	}
+
+	public void setTipoEndereco(Integer tipoEndereco) {
+		this.tipoEndereco = tipoEndereco;
+	}
+
 //	@OneToMany(mappedBy = "endereco")
 //	private Set<Estabelecimento> estabelecimento;
-	
-	
 }

@@ -40,6 +40,7 @@ public class PublicacaoResource {
 	@RequestMapping(value = "/estabelecimento/{idEstabelecimento}", method = RequestMethod.GET)
 	public List<PublicacaoResDTO> consultarTodas(@PathVariable Long idEstabelecimento,
 			@RequestParam(defaultValue = "false") Optional<Boolean> encerrado) {
+
 		return new PublicacaoResDTO(
 				this.publicacaoService.consultarTodos(idEstabelecimento, encerrado.orElse(Boolean.valueOf(false))))
 						.toList();
@@ -47,11 +48,11 @@ public class PublicacaoResource {
 
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/proximas", method = RequestMethod.GET)
-	public List<PublicacaoResDTO> localizarPublicacoesAtivas(@RequestParam Optional<Long> latitude,
-			@RequestParam Optional<Long> longitude) {
+	public List<PublicacaoResDTO> localizarPublicacoesAtivas(@RequestParam Optional<Long> idEndereco,
+			@RequestParam Optional<Integer> alcanceKM) {
 
 		return new PublicacaoResDTO(this.publicacaoService
-				.localizarPublicacoesProximas(latitude.orElse(Long.valueOf(0)), longitude.orElse(Long.valueOf(0))))
+				.localizarPublicacoesProximas(idEndereco.orElse(Long.valueOf(0)), alcanceKM.orElse(Integer.valueOf(0))))
 						.toList();
 	}
 

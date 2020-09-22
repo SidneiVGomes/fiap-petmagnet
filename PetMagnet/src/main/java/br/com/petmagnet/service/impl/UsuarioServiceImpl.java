@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.petmagnet.exception.AppBeanNotFoundException;
+import br.com.petmagnet.model.Endereco;
 import br.com.petmagnet.model.Usuario;
 import br.com.petmagnet.repository.UsuarioRepository;
 import br.com.petmagnet.service.UsuarioService;
+import br.com.petmagnet.util.EnderecoTipo;
 import groovy.util.logging.Slf4j;
 
 @Slf4j
@@ -19,19 +21,48 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	@Autowired
+	private EnderecoServiceImpl enderecoService;
+	
 	@Override
 	public Usuario gravar(Usuario obj) {
+		Endereco endereco = this.enderecoService.consultar(obj.getEndereco());
+		
+		if (endereco == null) {
+			obj.getEndereco().setTipoEndereco(EnderecoTipo.PESSOA_FISICA.ordinal());
+			
+			endereco = this.enderecoService.gravar(obj.getEndereco());
+		}
+		
+		obj.setEndereco(endereco);
+		
 		if (this.usuarioRepository.findByEmailAndSenha(obj.getEmail(), obj.getSenha()).isPresent()) {
 			throw new AppBeanNotFoundException("Usuario já cadastrado");
 		}
-
-		obj.setId(null);
 
 		return this.usuarioRepository.save(obj);
 	}
 
 	@Override
 	public Usuario alterar(Long Id, Usuario obj) {
+		obj.getEndereco().setTipoEndereco(EnderecoTipo.PESSOA_FISICA.ordinal());
+
+		Endereco endereco = this.enderecoService.consultar(obj.getEndereco());
+		
+		if (endereco == null) {
+			endereco = obj.getEndereco();
+			
+		} else {
+			endereco.setTipoEndereco(obj.getEndereco().getTipoEndereco());
+			endereco.setCep(obj.getEndereco().getCep());
+			endereco.setUF(obj.getEndereco().getUF());
+			endereco.setPais(obj.getEndereco().getPais());
+			endereco.setLatitude(obj.getEndereco().getLatitude());
+			endereco.setLongitude(obj.getEndereco().getLongitude());
+		}
+
+		endereco = this.enderecoService.gravar(endereco);
+		
 		return this.usuarioRepository.findById(Id).map(usuario -> {
 			usuario.setSenha(obj.getSenha());
 			usuario.setDistanciaAnuncio(obj.getDistanciaAnuncio());
@@ -55,7 +86,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-//	public Optional<Usuario> consultarPorId(Long id) {
 	public Usuario consultarPorId(Long id) {
 		return this.usuarioRepository.findById(id)
 				.orElseThrow(() -> new AppBeanNotFoundException("Usuario não Cadastrado"));
