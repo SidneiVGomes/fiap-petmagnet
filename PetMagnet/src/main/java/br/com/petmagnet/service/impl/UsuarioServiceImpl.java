@@ -90,4 +90,27 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return this.usuarioRepository.findById(id)
 				.orElseThrow(() -> new AppBeanNotFoundException("Usuario não Cadastrado"));
 	}
+
+	@Override
+	public Usuario registrar(String eMail, String CEP, Integer alcanceKM) {
+		Endereco endereco = this.enderecoService.consultarCEP(CEP);
+		
+		if (endereco == null) {
+			endereco = this.enderecoService.gravar(
+					new Endereco(null, ".", ".", ".", ".", ".", ".", CEP, null, null, EnderecoTipo.PESSOA_FISICA.ordinal())
+				);
+		}
+		
+		try {
+			Usuario usuario = this.usuarioRepository.findByEmailAndSenha(eMail, "000000").get();
+			
+			usuario.setDistanciaAnuncio(alcanceKM);
+			usuario.setEndereco(endereco);
+			
+			return this.usuarioRepository.save(usuario);
+			
+		} catch (Exception e) {
+			return this.usuarioRepository.save(new Usuario(null, eMail, "00000", alcanceKM, endereco));
+		}
+	}
 }

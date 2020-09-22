@@ -10,4 +10,5 @@ import br.com.petmagnet.model.Endereco;
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 	Optional<Endereco> findByLogradouroAndNumeroAndBairroAndCidadeAndUF(String logradouro, String numero, String bairro, String cidade, String uf);
+	Optional<Endereco> findByCep(String CEP);
 }

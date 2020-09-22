@@ -1,6 +1,7 @@
 package br.com.petmagnet.resource;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,12 @@ public class UsuarioResource {
 		return new UsuarioResDTO(this.usuarioService.gravar((Usuario) usuarioReqDTO.toEntity()));
 	}
 
+	@ResponseStatus(HttpStatus.CREATED)
+	@RequestMapping(value = "/registrar", method = RequestMethod.POST)
+	public UsuarioResDTO registrar(@RequestParam String eMail, @RequestParam String CEP, @RequestParam Optional<Integer> alcanceKM) {
+		return new UsuarioResDTO(this.usuarioService.registrar(eMail, CEP, alcanceKM.orElse(Integer.valueOf(0))));
+	}
+		
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public UsuarioResDTO consultar(@PathVariable Long id) {

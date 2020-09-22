@@ -29,7 +29,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 	private GeoLocationProperties geoLocationProperties;
 
 	public Endereco gravar(Endereco obj) {
-		Endereco endereco = this.consultar(obj);
+		Endereco endereco = this.consultarCEP(obj.getCep());
 
 		if (endereco != null) {
 			return endereco;
@@ -57,7 +57,8 @@ public class EnderecoServiceImpl implements EnderecoService {
 			throw new AppBeanNotFoundException(e1.getMessage());
 		} catch (org.json.simple.parser.ParseException e1) {
 			throw new AppBeanNotFoundException(e1.getMessage());
-		}	}
+		}
+	}
 
 	@Override
 	public Endereco excluir(Long id) {
@@ -69,9 +70,13 @@ public class EnderecoServiceImpl implements EnderecoService {
 	@Override
 	public Endereco consultar(Endereco obj) {
 		try {
-			return this.enderecoRepository.findByLogradouroAndNumeroAndBairroAndCidadeAndUF(obj.getLogradouro(),
-					obj.getNumero(), obj.getBairro(), obj.getCidade(), obj.getUF()).get();
-			
+			if (obj.getLogradouro() == null) {
+				return this.enderecoRepository.findByCep(obj.getCep()).get();
+			} else {
+				return this.enderecoRepository.findByLogradouroAndNumeroAndBairroAndCidadeAndUF(obj.getLogradouro(),
+						obj.getNumero(), obj.getBairro(), obj.getCidade(), obj.getUF()).get();
+			}
+
 		} catch (Exception e) {
 			return null;
 		}
@@ -80,5 +85,14 @@ public class EnderecoServiceImpl implements EnderecoService {
 	@Override
 	public List<Endereco> consultarTodos() {
 		return this.enderecoRepository.findAll();
+	}
+
+	@Override
+	public Endereco consultarCEP(String CEP) {
+		try {
+			return this.enderecoRepository.findByCep(CEP).get();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

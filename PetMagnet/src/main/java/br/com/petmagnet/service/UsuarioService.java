@@ -13,4 +13,5 @@ public interface UsuarioService {
 	public Usuario excluir(Long id);
 	public Usuario consultarPorId(Long id);
 	public List<Usuario> consultarTodos();
+	public Usuario registrar(String eMail, String CEP, Integer alcanceKM);
 }

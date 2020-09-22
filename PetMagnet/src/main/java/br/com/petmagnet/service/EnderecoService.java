@@ -11,5 +11,6 @@ public interface EnderecoService {
 	public Endereco gravar(Endereco obj);
 	public Endereco excluir(Long id);
 	public Endereco consultar(Endereco obj);
+	public Endereco consultarCEP(String CEP);
 	public List<Endereco> consultarTodos();
 }
