@@ -5,10 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -34,14 +38,20 @@ public class Usuario extends LogRegistro {
 	@Column(name = "nr_distancia_anuncio")
 	private Integer distanciaAnuncio;
 
+	@ManyToOne
+	@JoinColumn(name = "id_endereco")
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	private Endereco endereco;	
+	
 	public Usuario(Long id, @NotEmpty @Email String email,
 			@NotEmpty @Length(min = 5, max = 20, message = "A senha deve ter entre {min} a {max} caracteres") String senha,
-			Integer distanciaAnuncio) {
+			Integer distanciaAnuncio, Endereco endereco) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.senha = senha;
 		this.distanciaAnuncio = distanciaAnuncio;
+		this.endereco = endereco;
 	}
 
 	public Usuario() {
@@ -78,5 +88,13 @@ public class Usuario extends LogRegistro {
 
 	public void setDistanciaAnuncio(Integer distanciaAnuncio) {
 		this.distanciaAnuncio = distanciaAnuncio;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 }

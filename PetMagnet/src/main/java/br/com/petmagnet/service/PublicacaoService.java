@@ -16,5 +16,5 @@ public interface PublicacaoService {
 	public Publicacao cancelar(Long idEstabelecimento, Long idPublicacao);
 	public Optional<Publicacao> consultarPorId(Long idEstabelecimento, Long idPublicacao);
 	public List<Publicacao> consultarTodos(Long idEstabelecimento, Boolean exibirEncerrados);
-	public List<Publicacao> localizarPublicacoesProximas(Long latitude, Long longitude);
+	public List<Publicacao> localizarPublicacoesProximas(Long idEndereco, Integer alcanceKM);
 }

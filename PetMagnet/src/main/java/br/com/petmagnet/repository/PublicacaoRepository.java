@@ -23,4 +23,7 @@ public interface PublicacaoRepository extends JpaRepository<Publicacao, Long> {
 	public List<Publicacao> findByPublicacoesAtivas(@Param("dtA") Date dtAtual);
 	
 	public Publicacao findByEstabelecimentoAndAnunciosAndCancelado(Estabelecimento estabelecimento, Anuncio anuncio, Boolean cancelado);
+	
+	@Query(nativeQuery = true, value = "SELECT * FROM public.\"FN_ObterLocaisProximos\"(:id_usuario, :distancia_km)")
+	public List<Publicacao> findByPublicacoesProximas(@Param("id_usuario") Long id_usuario, @Param("distancia_km") Integer distancia_km);
 }

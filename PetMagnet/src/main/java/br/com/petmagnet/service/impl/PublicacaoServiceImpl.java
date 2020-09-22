@@ -1,12 +1,7 @@
 package br.com.petmagnet.service.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,20 +128,12 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 	}
 
 	@Override
-	public List<Publicacao> localizarPublicacoesProximas(Long latitude, Long longitude) {
-		LocalDateTime agora = LocalDateTime.now();
-		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-		Date dtAtual = null;
-
-		try {
-			dtAtual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agora.format(formatador));
-		} catch (ParseException e) {
+	public List<Publicacao> localizarPublicacoesProximas(Long idEndereco, Integer alcanceKM) {
+		if (alcanceKM == 0) {
+			alcanceKM = 2000;
 		}
-
-		List<Publicacao> publicacoes = this.publicacaoRepository.findByPublicacoesAtivas(dtAtual);
-
-		return publicacoes;
+		
+		return this.publicacaoRepository.findByPublicacoesProximas(idEndereco , alcanceKM);
 	}
 
 	public Boolean pubicacaoEncerrada(Publicacao publicacao) {

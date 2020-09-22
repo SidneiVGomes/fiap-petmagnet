@@ -10,8 +10,8 @@ public class EnderecoResDTO {
 	private String UF;
 	private String pais;
 	private String cep;
-	private String latitude;
-	private String longitude;
+	private Double latitude;
+	private Double longitude;
 	
 	public EnderecoResDTO(Endereco endereco) {
 		this.setLogradouro(endereco.getLogradouro());
@@ -26,7 +26,7 @@ public class EnderecoResDTO {
 	}
 
 	public EnderecoResDTO(String logradouro, String numero, String bairro, String cidade, String uF, String pais,
-			String cep, String latitude, String longitude) {
+			String cep, Double latitude, Double longitude) {
 		super();
 		this.logradouro = logradouro;
 		this.numero = numero;
@@ -95,19 +95,19 @@ public class EnderecoResDTO {
 		this.cep = cep;
 	}
 
-	public String getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public String getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
-	}	
+	}
 }
