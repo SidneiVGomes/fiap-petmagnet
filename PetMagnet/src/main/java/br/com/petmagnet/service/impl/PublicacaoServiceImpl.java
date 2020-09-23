@@ -134,18 +134,10 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 	@Override
 	public List<Publicacao> localizarPublicacoesProximas(Long idUsuario, Integer alcanceKM) {
 		if (alcanceKM == 0) {
-			alcanceKM = 2000;
+			alcanceKM = 2;
 		}
 		
-		Long idEndereco = Long.parseLong("0");
-		
-		Usuario usuario = this.usuarioService.consultarPorId(idUsuario);
-		
-		if (usuario != null) {
-			idEndereco = usuario.getEndereco().getId();
-		}
-		
-		return this.publicacaoRepository.findByPublicacoesProximas(idEndereco, (alcanceKM * 1000));
+		return this.publicacaoRepository.findByPublicacoesProximas(idUsuario, (alcanceKM * 1000));
 	}
 
 	public Boolean pubicacaoEncerrada(Publicacao publicacao) {
