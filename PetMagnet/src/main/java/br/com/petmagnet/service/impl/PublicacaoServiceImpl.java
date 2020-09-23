@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.dialect.IDialect;
 
 import br.com.petmagnet.exception.AppBeanNotFoundException;
 import br.com.petmagnet.model.Anuncio;
@@ -16,6 +17,7 @@ import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.model.Publicacao;
 import br.com.petmagnet.model.Usuario;
 import br.com.petmagnet.repository.PublicacaoRepository;
+import br.com.petmagnet.repository.UsuarioRepository;
 import br.com.petmagnet.service.PublicacaoService;
 import groovy.util.logging.Slf4j;
 
@@ -34,10 +36,10 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
 	@Autowired
 	private AnuncioServiceImpl anuncioService;
-	
+
 	@Autowired
-	private UsuarioServiceImpl usuarioService;
-		
+	private UsuarioRepository usuarioRepository;
+
 	@Override
 	public Publicacao publicar(Publicacao obj) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getEstabelecimento().getId());
@@ -137,15 +139,16 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 			alcanceKM = 2;
 		}
 		
-		Long idEndereco = null;
-		
+		Usuario usuario = null;
+		Long idEndereco = Long.parseLong("0");
+
 		try {
-			Usuario usuario = this.usuarioService.consultarPorId(idUsuario);
-			
-			idEndereco = usuario.getEndereco().getId();
+			if (idUsuario != 0) {
+				usuario = this.usuarioRepository.findById(idUsuario).get();
+				idEndereco = usuario.getEndereco().getId();
+			}
 			
 		} catch (Exception e) {
-			idEndereco = Long.parseLong("0");
 		}
 		
 		return this.publicacaoRepository.findByPublicacoesProximas(idEndereco, (alcanceKM * 1000));
