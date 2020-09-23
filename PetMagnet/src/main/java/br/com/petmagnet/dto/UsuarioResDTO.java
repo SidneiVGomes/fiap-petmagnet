@@ -11,6 +11,7 @@ public class UsuarioResDTO {
 	private Long idUsuario;	
 	private String email;
 	private Integer distanciaAnuncio;
+	private String cep;
 
 	@JsonIgnore
 	private List<Usuario> usuarios;
@@ -25,11 +26,12 @@ public class UsuarioResDTO {
 		return listDTO;
 	}
 
-	public UsuarioResDTO(Long idUsuario, String email, Integer distanciaAnuncio) {
+	public UsuarioResDTO(Long idUsuario, String email, Integer distanciaAnuncio, String cep) {
 		super();
 		this.idUsuario = idUsuario;
 		this.email = email;
 		this.distanciaAnuncio = distanciaAnuncio;
+		this.cep = cep;
 	}
 
 	public UsuarioResDTO(List<Usuario> obj) {
@@ -42,6 +44,7 @@ public class UsuarioResDTO {
 		this.idUsuario = obj.getId();
 		this.email = obj.getEmail();
 		this.distanciaAnuncio = obj.getDistanciaAnuncio();
+		this.cep = obj.getEndereco().getCep();
 	}	
 	
 	public UsuarioResDTO() {
@@ -78,5 +81,13 @@ public class UsuarioResDTO {
 
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
 }

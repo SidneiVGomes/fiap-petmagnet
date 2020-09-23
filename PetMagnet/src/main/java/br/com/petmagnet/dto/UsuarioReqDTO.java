@@ -17,8 +17,8 @@ public class UsuarioReqDTO implements RequestDTO<Usuario> {
 	@Email
 	@NotEmpty(message = "Informe seu email para consuir o cadastro.")
 	private String email;
-	@NotEmpty
-	@Length(min = 5, max = 20, message = "A senha deve ter entre {min} a {max} caracteres")
+//	@NotEmpty
+//	@Length(min = 5, max = 20, message = "A senha deve ter entre {min} a {max} caracteres")
 	private String senha;
 	private Integer distanciaAnuncio;
 	private EnderecoReqDTO endereco;

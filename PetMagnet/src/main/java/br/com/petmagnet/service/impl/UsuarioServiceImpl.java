@@ -23,19 +23,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private EnderecoServiceImpl enderecoService;
-	
+
 	@Override
 	public Usuario gravar(Usuario obj) {
 		Endereco endereco = this.enderecoService.consultar(obj.getEndereco());
-		
+
 		if (endereco == null) {
 			obj.getEndereco().setTipoEndereco(EnderecoTipo.PESSOA_FISICA.ordinal());
-			
+
 			endereco = this.enderecoService.gravar(obj.getEndereco());
 		}
-		
+
 		obj.setEndereco(endereco);
-		
+
 		if (this.usuarioRepository.findByEmailAndSenha(obj.getEmail(), obj.getSenha()).isPresent()) {
 			throw new AppBeanNotFoundException("Usuario já cadastrado");
 		}
@@ -48,10 +48,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 		obj.getEndereco().setTipoEndereco(EnderecoTipo.PESSOA_FISICA.ordinal());
 
 		Endereco endereco = this.enderecoService.consultar(obj.getEndereco());
-		
+
 		if (endereco == null) {
 			endereco = obj.getEndereco();
-			
+
 		} else {
 			endereco.setTipoEndereco(obj.getEndereco().getTipoEndereco());
 			endereco.setCep(obj.getEndereco().getCep());
@@ -62,7 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 
 		endereco = this.enderecoService.gravar(endereco);
-		
+
 		return this.usuarioRepository.findById(Id).map(usuario -> {
 			usuario.setSenha(obj.getSenha());
 			usuario.setDistanciaAnuncio(obj.getDistanciaAnuncio());
@@ -94,23 +94,27 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public Usuario registrar(String eMail, String CEP, Integer alcanceKM) {
 		Endereco endereco = this.enderecoService.consultarCEP(CEP);
-		
+
 		if (endereco == null) {
-			endereco = this.enderecoService.gravar(
-					new Endereco(null, ".", ".", ".", ".", ".", ".", CEP, null, null, EnderecoTipo.PESSOA_FISICA.ordinal())
-				);
+			endereco = this.enderecoService.gravar(new Endereco(null, ".", ".", ".", ".", ".", ".", CEP, null, null,
+					EnderecoTipo.PESSOA_FISICA.ordinal()));
 		}
-		
+
+		Usuario usuario = null;
+
 		try {
-			Usuario usuario = this.usuarioRepository.findByEmailAndSenha(eMail, "000000").get();
-			
+			usuario = this.usuarioRepository.findByEmailAndSenha(eMail, "").get();
+		} catch (Exception e) {
+		}
+
+		if (usuario != null) {
 			usuario.setDistanciaAnuncio(alcanceKM);
 			usuario.setEndereco(endereco);
-			
+
 			return this.usuarioRepository.save(usuario);
-			
-		} catch (Exception e) {
-			return this.usuarioRepository.save(new Usuario(null, eMail, "00000", alcanceKM, endereco));
+
+		} else {
+			return this.usuarioRepository.save(new Usuario(null, eMail, "", alcanceKM, endereco));
 		}
 	}
 }

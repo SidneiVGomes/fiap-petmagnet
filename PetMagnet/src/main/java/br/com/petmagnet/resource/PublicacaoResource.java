@@ -48,11 +48,11 @@ public class PublicacaoResource {
 
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/proximas", method = RequestMethod.GET)
-	public List<PublicacaoResDTO> localizarPublicacoesAtivas(@RequestParam Optional<Long> idEndereco,
+	public List<PublicacaoResDTO> localizarPublicacoesAtivas(@RequestParam Optional<Long> idUsuario,
 			@RequestParam Optional<Integer> alcanceKM) {
 
 		return new PublicacaoResDTO(this.publicacaoService
-				.localizarPublicacoesProximas(idEndereco.orElse(Long.valueOf(0)), alcanceKM.orElse(Integer.valueOf(0))))
+				.localizarPublicacoesProximas(idUsuario.orElse(Long.valueOf("0")), alcanceKM.orElse(Integer.valueOf(0))))
 						.toList();
 	}
 

@@ -31,8 +31,8 @@ public class Usuario extends LogRegistro {
 	private String email;
 
 	@Column(name = "ds_senha", length = 20)
-	@NotEmpty
-	@Length(min = 5, max = 20, message = "A senha deve ter entre {min} a {max} caracteres")
+//	@NotEmpty
+//	@Length(min = 5, max = 20, message = "A senha deve ter entre {min} a {max} caracteres")
 	private String senha;
 
 	@Column(name = "nr_distancia_anuncio")
