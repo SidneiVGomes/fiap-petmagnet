@@ -137,20 +137,6 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 			alcanceKM = 2;
 		}
 		
-//		Long idEndereco = Long.parseLong("0");
-//		
-//		Usuario usuario = null;
-//		
-//		try {
-//			usuario = this.usuarioService.consultarPorId(idUsuario);
-//			
-//			if (usuario != null) {
-//				idEndereco = usuario.getEndereco().getId();
-//			}
-//		} catch (Exception e) {
-//			alcanceKM = 1;
-//		}
-		
 		return this.publicacaoRepository.findByPublicacoesProximas(idUsuario, (alcanceKM * 1000));
 	}
 
