@@ -14,6 +14,7 @@ import br.com.petmagnet.model.Anuncio;
 import br.com.petmagnet.model.Colaborador;
 import br.com.petmagnet.model.Estabelecimento;
 import br.com.petmagnet.model.Publicacao;
+import br.com.petmagnet.model.Usuario;
 import br.com.petmagnet.repository.PublicacaoRepository;
 import br.com.petmagnet.service.PublicacaoService;
 import groovy.util.logging.Slf4j;
@@ -33,7 +34,10 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
 	@Autowired
 	private AnuncioServiceImpl anuncioService;
-
+	
+	@Autowired
+	private UsuarioServiceImpl usuarioService;
+		
 	@Override
 	public Publicacao publicar(Publicacao obj) {
 		Estabelecimento estabelecimento = this.estabelecimentoService.consultarPorId(obj.getEstabelecimento().getId());
@@ -128,12 +132,20 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 	}
 
 	@Override
-	public List<Publicacao> localizarPublicacoesProximas(Long idEndereco, Integer alcanceKM) {
+	public List<Publicacao> localizarPublicacoesProximas(Long idUsuario, Integer alcanceKM) {
 		if (alcanceKM == 0) {
 			alcanceKM = 2000;
 		}
 		
-		return this.publicacaoRepository.findByPublicacoesProximas(idEndereco , alcanceKM);
+		Long idEndereco = Long.parseLong("0");
+		
+		Usuario usuario = this.usuarioService.consultarPorId(idUsuario);
+		
+		if (usuario != null) {
+			idEndereco = usuario.getEndereco().getId();
+		}
+		
+		return this.publicacaoRepository.findByPublicacoesProximas(idEndereco, (alcanceKM * 1000));
 	}
 
 	public Boolean pubicacaoEncerrada(Publicacao publicacao) {

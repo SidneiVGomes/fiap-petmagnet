@@ -35,7 +35,7 @@ public class UsuarioResource {
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/registrar", method = RequestMethod.POST)
 	public UsuarioResDTO registrar(@RequestParam String eMail, @RequestParam String CEP, @RequestParam Optional<Integer> alcanceKM) {
-		return new UsuarioResDTO(this.usuarioService.registrar(eMail, CEP, alcanceKM.orElse(Integer.valueOf(0))));
+		return new UsuarioResDTO(this.usuarioService.registrar(eMail, CEP, alcanceKM.orElse(Integer.valueOf(5))));
 	}
 		
 	@ResponseStatus(HttpStatus.OK)
